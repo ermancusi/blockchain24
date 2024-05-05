@@ -2,8 +2,8 @@ import sys
 import json
 from algosdk import error
 from algosdk.v2client import algod
-from algosdk.future import transaction 
-from algosdk.future.transaction import AssetConfigTxn
+from algosdk import transaction 
+from algosdk.transaction import AssetConfigTxn
 from utilities import algodAddress, algodToken, wait_for_confirmation, getSKAddr
 
 def destroyAsset(managerMNEMFile,assetID,algodClient):

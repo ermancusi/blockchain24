@@ -1,10 +1,11 @@
 import sys
 import json
 import base64
+from utilities import algodAddress, algodToken, wait_for_confirmation
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
 from algosdk.transaction import PaymentTxn, write_to_file
-from utilities import algodAddress, algodToken, wait_for_confirmation
+
 
 
 def payTX(sKey,sAddr,rAddr,amount,algodClient):

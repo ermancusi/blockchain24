@@ -2,7 +2,7 @@ import sys
 import base64
 from algosdk import account
 from algosdk.v2client import algod
-from utilities import algodAddress, algodToken, wait_for_confirmation, getSKAddr
+from utilities import algodAddress, algodToken
 
 
 def check(AddrFile,index,algodClient):

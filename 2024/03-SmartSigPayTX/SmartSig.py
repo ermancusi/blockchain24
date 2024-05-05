@@ -1,10 +1,10 @@
 import sys
 import base64
-
-from algosdk.future import transaction
+from utilities import algodAddress, algodToken, wait_for_confirmation
+from algosdk import transaction
 from algosdk import mnemonic
 from algosdk.v2client import algod
-from utilities import algodAddress, algodToken, wait_for_confirmation
+
 
 def main():
     if len(sys.argv)!=4:

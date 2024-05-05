@@ -1,7 +1,7 @@
 import sys
 import json
 from algosdk.v2client import algod
-from algosdk.future.transaction import AssetTransferTxn, write_to_file
+from algosdk.transaction import AssetTransferTxn, write_to_file
 from utilities import algodAddress, algodToken, wait_for_confirmation, getSKAddr
 
 def transfer(senderMNEMFile,receiverADDRFile,assetID,algodClient):

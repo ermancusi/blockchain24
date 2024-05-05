@@ -1,5 +1,4 @@
 import sys
-from algosdk import account
 from algosdk.v2client import algod
 from utilities import algodAddress, algodToken
 

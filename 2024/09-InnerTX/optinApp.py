@@ -3,9 +3,9 @@ import base64
 import algosdk.encoding as e
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
-from algosdk.future import transaction
-from algosdk.future.transaction import ApplicationOptInTxn, PaymentTxn, write_to_file
-from utilities import algodAddress, algodToken, wait_for_confirmation, getSKAddr
+from algosdk import transaction
+from algosdk.transaction import ApplicationOptInTxn, PaymentTxn, write_to_file
+from utilities import algodAddress, algodToken, wait_for_confirmation
 
 def main(MnemFile,index,algodClient):
 
@@ -17,6 +17,7 @@ def main(MnemFile,index,algodClient):
 
     with open(MnemFile,'r') as f:
         Mnem=f.read()
+
     SK=mnemonic.to_private_key(Mnem)
     playerAddr=account.address_from_private_key(SK)
     print(f'{"User address: ":32s}{playerAddr:s}')

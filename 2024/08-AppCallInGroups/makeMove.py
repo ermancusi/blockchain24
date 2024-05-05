@@ -1,13 +1,8 @@
-import datetime
 import sys
-import json
-import base64
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
-from algosdk.future import transaction
-from algosdk.future.transaction import write_to_file
-#from algosdk.future.transaction import ApplicationNoOpTxn
-from utilities import algodAddress, algodToken, wait_for_confirmation, getSKAddr
+from algosdk import transaction
+from utilities import algodAddress, algodToken, wait_for_confirmation
 
 
 def makeMove(MnemFile,DealerFile,index,move,algodClient):
@@ -17,8 +12,8 @@ def makeMove(MnemFile,DealerFile,index,move,algodClient):
     with open(MnemFile,'r') as f:
         Mnem=f.read()
     SK=mnemonic.to_private_key(Mnem)
-    Addr=account.address_from_private_key(SK)
-    Pk=mnemonic.to_public_key(Mnem)
+    Addr=Pk=account.address_from_private_key(SK)
+   
 
     with open(DealerFile,'r') as f:
         Dealer=f.read()

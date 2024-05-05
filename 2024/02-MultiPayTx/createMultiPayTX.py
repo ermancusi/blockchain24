@@ -1,8 +1,7 @@
 import sys
 from algosdk import account
 from algosdk.v2client import algod
-from algosdk.transaction import Multisig, MultisigTransaction, PaymentTxn
-from algosdk.transaction import write_to_file
+from algosdk.transaction import Multisig, MultisigTransaction, PaymentTxn, write_to_file
 from utilities import algodAddress, algodToken
 
 

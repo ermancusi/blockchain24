@@ -1,7 +1,5 @@
-from algosdk.v2client import algod
-
 algodAddress="https://testnet-api.algonode.cloud"
-algodToken="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+algodToken=""
 
 # utility function for waiting on a transaction confirmation
 def wait_for_confirmation(client,transaction_id,timeout):

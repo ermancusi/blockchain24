@@ -1,10 +1,9 @@
 import sys
-import base64
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
-from algosdk.future.transaction import write_to_file
-from algosdk.future.transaction import ApplicationOptInTxn
-from utilities import algodAddress, algodToken, wait_for_confirmation, getSKAddr
+from algosdk.transaction import write_to_file
+from algosdk.transaction import ApplicationOptInTxn
+from utilities import algodAddress, algodToken, wait_for_confirmation
 
 def main(MnemFile,index,algodClient):
 

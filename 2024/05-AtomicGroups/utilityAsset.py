@@ -1,7 +1,7 @@
 import json
 def printCreatedAsset(algodClient,account,assetid):    
-    account_info=algodclient.account_info(account)
-    idx = 0;
+    account_info=algodClient.account_info(account)
+    idx = 0
     for my_account_info in account_info['created-assets']:
         scrutinized_asset = account_info['created-assets'][idx]
         idx = idx + 1       
