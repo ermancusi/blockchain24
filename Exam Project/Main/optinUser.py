@@ -1,13 +1,16 @@
 import sys
-import base64
-from algosdk.future.transaction import ApplicationOptInTxn, AssetTransferTxn, calculate_group_id
-from utilities import wait_for_confirmation, getClient, getSKAddr
-import algosdk.encoding as e
+from utilities import wait_for_confirmation, getSKAddr
 from daoutilities import getAssetIdFromName, DAOtokenName
+from algosdk.transaction import ApplicationOptInTxn, AssetTransferTxn, calculate_group_id
+import algosdk.encoding as e
+from algosdk.v2client import algod
 
-def optInDAO(MnemFile,appId,directory):
+algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
+algodToken="" #free service does not require tokens
 
-    algodClient=getClient(directory)
+def optInDAO(MnemFile,appId):
+
+    algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
 
     SK,Addr=getSKAddr(MnemFile)
@@ -19,18 +22,20 @@ def optInDAO(MnemFile,appId,directory):
     print("App addr:        ",appAddr)
 
     assetId=getAssetIdFromName(appAddr,DAOtokenName,algodClient)
+    
     if assetId is None:
         print("Could not find asset",DAOtokenName)
         exit()
+
     print("Asset name:      ",DAOtokenName)
     print("Asset id:        ",assetId)
 
     txn1=AssetTransferTxn(sender=Addr,sp=params,receiver=Addr,amt=0,index=assetId)
     txn2=ApplicationOptInTxn(sender=Addr,sp=params,index=appId,foreign_assets=[assetId])
     gid=calculate_group_id([txn1,txn2])
-    txn1.group=gid
-    txn2.group=gid
 
+    txn1.group=txn2.group=gid
+    
     stxn1=txn1.sign(SK)
     stxn2=txn2.sign(SK)
 
@@ -40,14 +45,13 @@ def optInDAO(MnemFile,appId,directory):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=4:
-        print("usage: python3 "+sys.argv[0]+" <mnem> <app index> <node directory>")
+    if len(sys.argv)!=3:
+        print("usage: python3 "+sys.argv[0]+" <mnem> <app index>")
         exit()
 
     MnemFile=sys.argv[1]
-    index=int(sys.argv[2])
-    directory=sys.argv[3]
+    index=int(sys.argv[2])   
 
-    optInDAO(MnemFile,index,directory)
+    optInDAO(MnemFile,index)
     
     

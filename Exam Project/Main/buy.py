@@ -1,16 +1,15 @@
 import sys
-import base64
-#from algosdk import account, mnemonic
-#from algosdk.v2client import algod
-#from algosdk.future import transaction
-from algosdk.future.transaction import ApplicationNoOpTxn, PaymentTxn,calculate_group_id
-from utilities import wait_for_confirmation, getClient, getSKAddr
-import algosdk.encoding as e
+from utilities import wait_for_confirmation, getSKAddr
 from daoutilities import getAssetIdFromName, getSellingPrice, DAOtokenName
+from algosdk.transaction import ApplicationNoOpTxn, PaymentTxn,calculate_group_id
+import algosdk.encoding as e
+from algosdk.v2client import algod
 
-def buy(MnemFile,appIndex,nAssets,directory):
+algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
+algodToken="" #free service does not require tokens
 
-    algodClient=getClient(directory)
+def buy(MnemFile,appIndex,nAssets):
+    algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
 
     SK,Addr=getSKAddr(MnemFile)
@@ -26,8 +25,10 @@ def buy(MnemFile,appIndex,nAssets,directory):
     print("Price:    ",price)
 
     assetId=getAssetIdFromName(appAddr,DAOtokenName,algodClient)
-    if assetId is None:
-        print(f'Asset {assetName} not found')
+
+    if assetId is None:       
+        print(f'Asset not found')
+
     print("Asset Id: ",assetId)
 
 
@@ -36,11 +37,11 @@ def buy(MnemFile,appIndex,nAssets,directory):
     ctxn=ApplicationNoOpTxn(sender=Addr,sp=params,index=appIndex,app_args=["b".encode(),nAssets.to_bytes(8,'big')],foreign_assets=[assetId])
     appAddr=e.encode_address(e.checksum(b'appID'+appIndex.to_bytes(8, 'big')))
     gid=calculate_group_id([ptxn,ctxn])
-    ptxn.group=gid
-    ctxn.group=gid
-    
+    ptxn.group=ctxn.group=gid
+   
     sptxn=ptxn.sign(SK)
     sctxn=ctxn.sign(SK)
+    
     try:
         txId=algodClient.send_transactions([sptxn,sctxn])
     except Exception as err:
@@ -51,13 +52,13 @@ def buy(MnemFile,appIndex,nAssets,directory):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=5:
-        print("usage: python3 "+sys.argv[0]+" <mnem> <app index> <nAssets> <node directory>")
+    if len(sys.argv)!=4:
+        print("usage: python3 "+sys.argv[0]+" <mnem> <app index> <nAssets>")
         exit()
 
     mnemFile=sys.argv[1]
     appIndex=int(sys.argv[2])
     nAssets=int(sys.argv[3])
-    directory=sys.argv[4]
-    buy(mnemFile,appIndex,nAssets,directory)
+    
+    buy(mnemFile,appIndex,nAssets)
     

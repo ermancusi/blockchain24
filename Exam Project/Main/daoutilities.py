@@ -1,5 +1,4 @@
 import base64
-from algosdk import account
 
 DAOtokenName="FOSAD22Token"
 DAOGovName="FOSAD22-Gov"

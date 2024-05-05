@@ -1,14 +1,15 @@
 import sys
-import base64
-from algosdk.v2client import algod
-from algosdk.future.transaction import ApplicationNoOpTxn, PaymentTxn, calculate_group_id
-from utilities import wait_for_confirmation, getClient, getSKAddr
+from utilities import wait_for_confirmation, getSKAddr
+from algosdk.transaction import ApplicationNoOpTxn, PaymentTxn, calculate_group_id
 import algosdk.encoding as e
+from algosdk.v2client import algod
 
+algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
+algodToken="" #free service does not require tokens
 
-def startApp(mnemFile,index,directory):
+def startApp(mnemFile,index):
 
-    algodClient=getClient(directory)
+    algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
 
     SK,Addr=getSKAddr(mnemFile)
@@ -33,12 +34,12 @@ def startApp(mnemFile,index,directory):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=4:
-        print("usage: python3 "+sys.argv[0]+" <mnem> <app index> <node directory>")
+    if len(sys.argv)!=3:
+        print("usage: python3 "+sys.argv[0]+" <mnem> <app index>")
         exit()
 
     MnemFile=sys.argv[1]
     index=int(sys.argv[2])
-    directory=sys.argv[3]
-    startApp(MnemFile,index,directory)
+    
+    startApp(MnemFile,index)
     

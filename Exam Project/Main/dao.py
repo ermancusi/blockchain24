@@ -181,9 +181,11 @@ if __name__=='__main__':
     with open(sys.argv[1]) as f:
         aliceA=f.read()
     alice=Addr(aliceA)
+
     with open(sys.argv[2]) as f:
         bobA=f.read()
     bob=Addr(bobA)
+    
     with open(sys.argv[3]) as f:
         charlieA=f.read()
     charlie=Addr(charlieA)
