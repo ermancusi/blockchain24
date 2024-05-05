@@ -1,0 +1,15 @@
+-pip3 install pyteal (https://pyteal.readthedocs.io/en/stable/installation.html)
+
+-pip3 install py-algorand-sdk (https://py-algorand-sdk.readthedocs.io/en/latest/)
+
+
+-Dispenser: https://bank.testnet.algorand.network/
+
+-Testnet: https://app.dappflow.org/explorer/home (be sure to select "Algonode testnet" on the left)
+
+
+-https://github.com/giuper/Blockchain24/tree/main/10-DAO
+
+-"The DAO is created by having one of the founder run create.py." In realtà sembra che chiunque lo possa runnare. Riverificare e capire se è un problema o no. Se è un problema, capire se è possibile introdurre un vincolo che fa si che solo uno dei founder può crearlo.
+
+-Un utente può fare l'opt-out?

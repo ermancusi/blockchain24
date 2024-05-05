@@ -1,5 +1,1 @@
-bin
-lib64
-lib
-include
-pyvenv.cfg
+.venv
