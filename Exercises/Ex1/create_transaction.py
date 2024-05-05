@@ -55,12 +55,12 @@ def payTX(sKey,sAddr,rAddr,amount,algodClient, enrollmentNumber,note):
 
 
 if __name__=='__main__':
-    if (len(sys.argv)!=3):
-        print("Usage: "+sys.argv[0]+" <path of the sender's mnem> <path of the receiver's addr>")
+    if (len(sys.argv)!=2):
+        print("Usage: "+sys.argv[0]+" <path of the sender's mnem>")
         exit()
 
     senderMnemonicPath=sys.argv[1]
-    receiverAddr=sys.argv[2]
+    receiverAddr="VRGBBHHZX6K5F4LO5DBDWJAWQPGSWKCRIIEEWZXLLR6HNE7ZDLPYAFGFW"
     
     enrollmentNumber = "0622701668"      
     amountToTransfer=1_000_000
