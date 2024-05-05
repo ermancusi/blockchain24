@@ -16,7 +16,7 @@ from algosdk.v2client import algod
 from algosdk.transaction import PaymentTxn, write_to_file
 
 
-def payTX(sKey,sAddr,rAddr,amount,algodClient, enrollmentNumber,note):
+def payTX(sKey,sAddr,rAddr,amount,algodClient, note):
 
     params = algodClient.suggested_params()
 
@@ -86,7 +86,7 @@ if __name__=='__main__':
     print(f'{"Account balance:":32s}{balance} microAlgos')
 
     if (amountToTransfer<=balance):
-        payTX(senderSK,senderAddr,rAddr,amountToTransfer,algodClient,enrollmentNumber,bytes("Ex. 1 " + enrollmentNumber, 'utf-8'))
+        payTX(senderSK,senderAddr,rAddr,amountToTransfer,algodClient,bytes("Ex. 1 " + enrollmentNumber, 'utf-8'))
         print("\nTransaction Executed!")
     else:
         print("Insufficient Funds")

@@ -8,7 +8,7 @@ from algosdk.transaction import PaymentTxn, write_to_file
 
 
 
-def payTX(sKey,sAddr,rAddr,amount,algodClient):
+def payTX(sKey, sAddr, rAddr, amount, algodClient):
 
     params = algodClient.suggested_params()
 
