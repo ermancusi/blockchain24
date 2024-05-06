@@ -1,0 +1,176 @@
+#pragma version 5
+txn ApplicationID
+int 0
+==
+bnz main_l23
+txn OnCompletion
+int OptIn
+==
+bnz main_l22
+txn OnCompletion
+int CloseOut
+==
+bnz main_l19
+txn OnCompletion
+int UpdateApplication
+==
+bnz main_l16
+txn OnCompletion
+int DeleteApplication
+==
+bnz main_l13
+txn OnCompletion
+int NoOp
+==
+bnz main_l7
+err
+main_l7:
+txna ApplicationArgs 0
+btoi
+store 1
+load 1
+byte "max"
+app_global_get
+<=
+load 1
+int 0
+>
+&&
+load 1
+byte "heap"
+app_global_get
+<=
+&&
+txn Sender
+addr NGIDBLHU6R6RPJA26CXCZYBDZZJCX2DOW5JQHR45YM6GGL3MUK6ZYVU4XQ
+==
+byte "turn"
+app_global_get
+int 0
+==
+&&
+txn Sender
+addr YHVWOMXXWLFXRJVBK6EGDZ3WXECKXSCUEQXD3HDJS7IOYTOPX33F2DTI6A
+==
+byte "turn"
+app_global_get
+int 1
+==
+&&
+||
+&&
+bnz main_l9
+int 1
+return
+main_l9:
+byte "heap"
+app_global_get
+store 0
+byte "heap"
+load 0
+txna ApplicationArgs 0
+btoi
+-
+app_global_put
+byte "turn"
+app_global_get
+store 0
+byte "turn"
+int 1
+load 0
+-
+app_global_put
+txn Sender
+addr NGIDBLHU6R6RPJA26CXCZYBDZZJCX2DOW5JQHR45YM6GGL3MUK6ZYVU4XQ
+==
+bnz main_l12
+txn Receiver
+addr NGIDBLHU6R6RPJA26CXCZYBDZZJCX2DOW5JQHR45YM6GGL3MUK6ZYVU4XQ
+==
+assert
+int 0
+byte "balance"
+int 0
+byte "balance"
+app_local_get
+int 1
+-
+app_local_put
+int 1
+byte "balance"
+int 1
+byte "balance"
+app_local_get
+int 1
++
+app_local_put
+main_l11:
+int 1
+return
+main_l12:
+txn Receiver
+addr YHVWOMXXWLFXRJVBK6EGDZ3WXECKXSCUEQXD3HDJS7IOYTOPX33F2DTI6A
+==
+assert
+int 0
+byte "balance"
+int 0
+byte "balance"
+app_local_get
+int 1
++
+app_local_put
+int 1
+byte "balance"
+int 1
+byte "balance"
+app_local_get
+int 1
+-
+app_local_put
+b main_l11
+main_l13:
+txn Sender
+addr RGJQKVXPX75SRI6WHNQEAW3BRCUML5MI6G6FBWGU3TGHWUWV65SBJPWXKA
+==
+bnz main_l15
+int 0
+return
+main_l15:
+int 1
+return
+main_l16:
+txn Sender
+addr RGJQKVXPX75SRI6WHNQEAW3BRCUML5MI6G6FBWGU3TGHWUWV65SBJPWXKA
+==
+bnz main_l18
+int 0
+return
+main_l18:
+int 1
+return
+main_l19:
+txn Sender
+addr RGJQKVXPX75SRI6WHNQEAW3BRCUML5MI6G6FBWGU3TGHWUWV65SBJPWXKA
+==
+bnz main_l21
+int 0
+return
+main_l21:
+int 1
+return
+main_l22:
+int 1
+return
+main_l23:
+byte "turn"
+int 0
+app_global_put
+byte "heap"
+int 4
+app_global_put
+byte "max"
+int 3
+app_global_put
+int 1
+return
