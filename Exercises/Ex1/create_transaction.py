@@ -1,20 +1,34 @@
-"""
-Esercizio 1
-Creare un indirizzo algorand ed inviare 1 Algo all'indirizzo per l'esame mediante una transazione di 
-pagamento con firma singola che riporti come nota la stringa “Ex. 1” seguita dal numero di matricola 
-dello studente.
-"""
-
 import sys
 from algosdk import account, mnemonic
 import sys
 import json
 import base64
-from utilities import algodAddress, algodToken, wait_for_confirmation
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
 from algosdk.transaction import PaymentTxn, write_to_file
 
+algodAddress="https://testnet-api.algonode.cloud"
+algodToken="" #The above test algo node does not require a token
+
+# utility function for waiting on a transaction confirmation
+def wait_for_confirmation(client,transaction_id,timeout):
+    start_round = client.status()["last-round"] + 1
+    current_round = start_round
+
+    while current_round < start_round + timeout:
+        try:
+            pending_txn = client.pending_transaction_info(transaction_id)
+        except Exception:
+            return 
+        if pending_txn.get("confirmed-round", 0) > 0:
+            return pending_txn
+        elif pending_txn["pool-error"]:  
+            raise Exception(
+                'pool error: {}'.format(pending_txn["pool-error"]))
+        client.status_after_block(current_round)                   
+        current_round += 1
+    raise Exception(
+        'pending tx not found in timeout rounds, timeout value = : {}'.format(timeout))
 
 def payTX(sKey,sAddr,rAddr,amount,algodClient, note):
 
@@ -61,8 +75,9 @@ if __name__=='__main__':
 
     senderMnemonicPath=sys.argv[1]
     receiverAddr="VRGBBHHZX6K5F4LO5DBDWJAWQPGSWKCRIIEEWZXLLR6HNE7ZDLPYAFGFW"
+    receiverAddr="P5DMG5UCQKSBVYQRJ5S6WLWVDQDVWEFNFXSEEUIDPFNFH4Q7VFYGDSGAAE" #test address
     
-    enrollmentNumber = "0622701668"      
+    enrollmentNumber = "1111111111"      
     amountToTransfer=1_000_000
 
     
@@ -75,21 +90,23 @@ if __name__=='__main__':
     senderSK=mnemonic.to_private_key(passphrase)
     senderAddr=account.address_from_private_key(senderSK)
 
-    with open(receiverAddr,'r') as f:
-        rAddr=f.read()
+ 
 
     print(f'{"Sender address:":32s}{senderAddr:s}')
-    print(f'{"Receiver address:":32s}{rAddr:s}')
+    print(f'{"Receiver address:":32s}{receiverAddr:s}')
 
     
     balance=algodClient.account_info(senderAddr).get('amount')
     print(f'{"Account balance:":32s}{balance} microAlgos')
 
     if (amountToTransfer<=balance):
-        payTX(senderSK,senderAddr,rAddr,amountToTransfer,algodClient,bytes("Ex. 1 " + enrollmentNumber, 'utf-8'))
+        payTX(senderSK,senderAddr,receiverAddr,amountToTransfer,algodClient,bytes("Ex. 1 " + enrollmentNumber, 'utf-8'))
         print("\nTransaction Executed!")
     else:
         print("Insufficient Funds")
 
         
+
+
+
 

@@ -1,27 +1,5 @@
-"""
-Esercizio 1
-Creare un indirizzo algorand ed inviare 1 Algo all'indirizzo per l'esame mediante una transazione di 
-pagamento con firma singola che riporti come nota la stringa “Ex. 1” seguita dal numero di matricola 
-dello studente.
-"""
-
 import sys
 from algosdk import account, mnemonic
-import sys
-from algosdk import account, mnemonic
-
-
-def create_address (accountName): 
-    privateKey, address = account.generate_account()
-
-    with open(accountName+".addr",'w') as f:
-        f.write(address)
-
-    with open(accountName+".mnem",'w') as f:
-        f.write(mnemonic.from_private_key(privateKey))
-
-    return privateKey, address
-
 
 
 if __name__=='__main__':
@@ -31,7 +9,7 @@ if __name__=='__main__':
 
     accountName = sys.argv[1]    
 
-    privateKey, address = create_address(accountName)  
+    privateKey, address = account.generate_account()
 
     with open("Account/"+accountName+".addr",'w') as f:
         f.write(address)

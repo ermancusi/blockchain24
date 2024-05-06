@@ -1,10 +1,3 @@
-"""
-Esercizio 1
-Creare un indirizzo algorand ed inviare 1 Algo all'indirizzo per l'esame mediante una transazione di 
-pagamento con firma singola che riporti come nota la stringa “Ex. 1” seguita dal numero di matricola 
-dello studente.
-"""
-
 from algosdk import account, mnemonic
 import os
 from algosdk import account, mnemonic

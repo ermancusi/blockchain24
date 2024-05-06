@@ -5,7 +5,31 @@ import base64
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
 from algosdk.transaction import Multisig, MultisigTransaction, PaymentTxn, write_to_file
-from utilities import *
+
+
+algodAddress="https://testnet-api.algonode.cloud"
+algodToken="" #The above test algo node does not require a token
+
+# utility function for waiting on a transaction confirmation
+def wait_for_confirmation(client,transaction_id,timeout):
+    start_round = client.status()["last-round"] + 1
+    current_round = start_round
+
+    while current_round < start_round + timeout:
+        try:
+            pending_txn = client.pending_transaction_info(transaction_id)
+        except Exception:
+            return 
+        if pending_txn.get("confirmed-round", 0) > 0:
+            return pending_txn
+        elif pending_txn["pool-error"]:  
+            raise Exception(
+                'pool error: {}'.format(pending_txn["pool-error"]))
+        client.status_after_block(current_round)                   
+        current_round += 1
+    raise Exception(
+        'pending tx not found in timeout rounds, timeout value = : {}'.format(timeout))
+
 
 def list_subfolders(path):
     subfolders = []
@@ -110,8 +134,8 @@ def main():
     threshold=3
     accountPath = "Accounts"
     receiverAddress="VRGBBHHZX6K5F4LO5DBDWJAWQPGSWKCRIIEEWZXLLR6HNE7ZDLPYAFGFW"
-    receiverAddress="P5DMG5UCQKSBVYQRJ5S6WLWVDQDVWEFNFXSEEUIDPFNFH4Q7VFYGDSGAAE"
-    enrollmentNumber="0622701668"
+    receiverAddress="P5DMG5UCQKSBVYQRJ5S6WLWVDQDVWEFNFXSEEUIDPFNFH4Q7VFYGDSGAAE" #test address
+    enrollmentNumber=""
 
     # Get list of available accounts
     filenames = list_subfolders(accountPath)
@@ -155,7 +179,9 @@ def main():
     badActorAddress=account.address_from_private_key(badActorSK)
 
     print ("We have a bad actor who has not signed! " + badActorAddress)
-    Ex2TransactionID="T2Q5X3KOCWK47DXCIWSOMAX645HCVHESILG4CIENQUHSKDYY2Q3Q"
+    
+    Ex2TransactionID="T2Q5X3KOCWK47DXCIWSOMAX645HCVHESILG4CIENQUHSKDYY2Q3Q" #to change
+
     payTX(badActorSK, badActorAddress, receiverAddress, amount, algodClient,Ex2TransactionID)
     
 
