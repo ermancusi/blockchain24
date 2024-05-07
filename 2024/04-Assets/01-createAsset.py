@@ -1,7 +1,6 @@
 import sys
 import json
 from algosdk.v2client import algod
-from algosdk import account, mnemonic
 from algosdk import transaction 
 from algosdk.transaction import AssetConfigTxn
 from utilities import algodAddress, algodToken, wait_for_confirmation, getSKAddr
