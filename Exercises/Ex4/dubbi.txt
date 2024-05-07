@@ -1,0 +1,21 @@
+Traccia:  "Modificare il gioco Nim su Algorand"
+Domanda:  Quale codice deve essere preso come baseline? 07, 08 o 09?
+Risposta: Io ho assunto il 09, ma non so se è corretto
+
+
+
+Traccia:  "Inoltre l’app deve richiedere al momento dell’optin di inviare 10 Algo all’indirizzo per l'esame"
+Domanda:  Ciascun partecipante deve inviare, durante l'optin, Algo solo all'indirizzo dell'esame? O anche all'applicazione?
+Risposta: Avendo assunto come codice di base il 09, ho anche assunto che, durante l'optin, ciascun giocatore
+          invia solamente 10 Algo all'indirizzo dell'esame (quindi all'applicazione no)
+
+
+
+Traccia:  "e 1 Algo al vincitore della partita di Nim."
+Domanda:  Chi deve inviare l'Algo al vincitore? Chi perde? O l'applicazione?
+Risposta: Io ho assunto l'applicazione
+
+
+
+Altro dubbio:
+- Con riferimento a 04-makeMove, occorre sempre inviare i soldi al dealer del gioco?
