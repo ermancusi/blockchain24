@@ -1,7 +1,7 @@
-import random
 import os
 import json
 import base64
+import random
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
 from algosdk.transaction import Multisig, MultisigTransaction, PaymentTxn, write_to_file

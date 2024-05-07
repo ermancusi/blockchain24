@@ -1,4 +1,3 @@
-from algosdk import account, mnemonic
 import os
 from algosdk import account, mnemonic
 
