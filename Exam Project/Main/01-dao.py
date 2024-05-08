@@ -15,7 +15,7 @@ def handle_start():
                             InnerTxnBuilder.SetFields({
                                 TxnField.type_enum: TxnType.AssetConfig,
                                 TxnField.config_asset_total: Int(1_000_000),
-                                TxnField.config_asset_decimals: Int(3),
+                                TxnField.config_asset_decimals: Int(6),
                                 TxnField.config_asset_name: Bytes(DAOtokenName),
                                 TxnField.config_asset_unit_name: Bytes("fsd3"),
                                 TxnField.config_asset_url: Bytes("https://sites.google.com/uniurb.it/fosad/home/fosad-2022"),
@@ -87,6 +87,7 @@ def approval_program(Alice,Bob,Charlie):
                     App.globalPut(Bytes("scurrentPrice"),Int(1_000_000)),
                     App.globalPut(Bytes("assetIDGov"),Int(0)),
                     App.globalPut(Bytes("assetIDToken"),Int(0)),
+                    App.globalPut(Bytes("assetSold"),Int(0)),
                     Approve()])
 
     handle_optin=If(Or(Txn.sender()==Alice,
@@ -140,7 +141,20 @@ def approval_program(Alice,Bob,Charlie):
                   Gtxn[0].type_enum()==TxnType.Payment,
                   Gtxn[0].receiver()==Global.current_application_address(),
                   Gtxn[0].amount()>=Btoi(Gtxn[1].application_args[1])*App.globalGet(Bytes("scurrentPrice")))
-            ).Then(Seq([
+            ).Then(
+                    Seq([App.globalPut(Bytes("assetSold"), App.globalGet(Bytes("assetSold")) + Int(1)),
+                        If(
+                            App.globalGet(Bytes("assetSold")) == Int(3)
+                        ).Then(
+                            Seq([App.globalPut(Bytes("scurrentPrice"), App.globalGet(Bytes("scurrentPrice")) * Int(2)),
+                            ])
+                        ),
+                        If(
+                            App.globalGet(Bytes("assetSold")) == Int(5)
+                        ).Then(
+                            Seq([App.globalPut(Bytes("scurrentPrice"), App.globalGet(Bytes("scurrentPrice")) * Int(2)),
+                            ])
+                        ),
                      InnerTxnBuilder.Begin(),
                      InnerTxnBuilder.SetFields({
                          TxnField.type_enum: TxnType.AssetTransfer,

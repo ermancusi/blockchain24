@@ -1,0 +1,456 @@
+#pragma version 5
+txn ApplicationID
+int 0
+==
+bnz main_l45
+txn OnCompletion
+int OptIn
+==
+bnz main_l42
+txn OnCompletion
+int CloseOut
+==
+bnz main_l41
+txn OnCompletion
+int UpdateApplication
+==
+bnz main_l38
+txn OnCompletion
+int DeleteApplication
+==
+bnz main_l35
+txn OnCompletion
+int NoOp
+==
+bnz main_l7
+err
+main_l7:
+txna ApplicationArgs 0
+store 0
+load 0
+byte "sp"
+==
+bnz main_l29
+load 0
+byte "bp"
+==
+bnz main_l23
+load 0
+byte "b"
+==
+bnz main_l16
+load 0
+byte "s"
+==
+bnz main_l12
+err
+main_l12:
+global GroupSize
+int 2
+==
+gtxn 0 TypeEnum
+int pay
+==
+&&
+gtxn 0 Receiver
+global CurrentApplicationAddress
+==
+&&
+gtxn 0 Amount
+int 500000
+>=
+&&
+bnz main_l15
+int 0
+return
+int 1
+return
+main_l15:
+itxn_begin
+int acfg
+itxn_field TypeEnum
+int 1000000
+itxn_field ConfigAssetTotal
+int 6
+itxn_field ConfigAssetDecimals
+byte "FOSAD22Token"
+itxn_field ConfigAssetName
+byte "fsd3"
+itxn_field ConfigAssetUnitName
+byte "https://sites.google.com/uniurb.it/fosad/home/fosad-2022"
+itxn_field ConfigAssetURL
+global CurrentApplicationAddress
+itxn_field ConfigAssetManager
+global CurrentApplicationAddress
+itxn_field ConfigAssetReserve
+global CurrentApplicationAddress
+itxn_field ConfigAssetFreeze
+global CurrentApplicationAddress
+itxn_field ConfigAssetClawback
+itxn_submit
+byte "assetIDToken"
+itxn CreatedAssetID
+app_global_put
+itxn_begin
+int acfg
+itxn_field TypeEnum
+int 3
+itxn_field ConfigAssetTotal
+int 0
+itxn_field ConfigAssetDecimals
+byte "vr3"
+itxn_field ConfigAssetUnitName
+byte "FOSAD22-Gov"
+itxn_field ConfigAssetName
+byte "https://sites.google.com/uniurb.it/fosad/home/fosad-2022"
+itxn_field ConfigAssetURL
+global CurrentApplicationAddress
+itxn_field ConfigAssetManager
+global CurrentApplicationAddress
+itxn_field ConfigAssetReserve
+global CurrentApplicationAddress
+itxn_field ConfigAssetFreeze
+global CurrentApplicationAddress
+itxn_field ConfigAssetClawback
+itxn_submit
+byte "assetIDGov"
+itxn CreatedAssetID
+app_global_put
+int 1
+return
+main_l16:
+global GroupSize
+int 2
+==
+gtxn 0 TypeEnum
+int pay
+==
+&&
+gtxn 0 Receiver
+global CurrentApplicationAddress
+==
+&&
+gtxn 0 Amount
+gtxna 1 ApplicationArgs 1
+btoi
+byte "scurrentPrice"
+app_global_get
+*
+>=
+&&
+bnz main_l18
+int 0
+return
+main_l18:
+byte "assetSold"
+byte "assetSold"
+app_global_get
+int 1
++
+app_global_put
+byte "assetSold"
+app_global_get
+int 3
+==
+bnz main_l22
+main_l19:
+byte "assetSold"
+app_global_get
+int 5
+==
+bnz main_l21
+main_l20:
+itxn_begin
+int axfer
+itxn_field TypeEnum
+txn Sender
+itxn_field AssetReceiver
+gtxna 1 ApplicationArgs 1
+btoi
+itxn_field AssetAmount
+byte "assetIDToken"
+app_global_get
+itxn_field XferAsset
+itxn_submit
+int 1
+return
+main_l21:
+byte "scurrentPrice"
+byte "scurrentPrice"
+app_global_get
+int 2
+*
+app_global_put
+b main_l20
+main_l22:
+byte "scurrentPrice"
+byte "scurrentPrice"
+app_global_get
+int 2
+*
+app_global_put
+b main_l19
+main_l23:
+global GroupSize
+int 2
+==
+gtxn 0 TypeEnum
+int axfer
+==
+&&
+gtxn 0 AssetReceiver
+global CurrentApplicationAddress
+==
+&&
+gtxn 0 AssetAmount
+int 1
+>=
+&&
+gtxn 0 XferAsset
+byte "assetIDGov"
+app_global_get
+==
+&&
+bnz main_l25
+int 0
+return
+main_l25:
+byte "bpprice"
+app_global_get
+int 0
+==
+gtxna 1 ApplicationArgs 1
+btoi
+byte "bpprice"
+app_global_get
+!=
+||
+txn Sender
+byte "bproposer"
+app_global_get
+==
+||
+bnz main_l28
+byte "bpprice"
+int 0
+app_global_put
+byte "bcurrentPrice"
+gtxna 1 ApplicationArgs 1
+btoi
+app_global_put
+main_l27:
+itxn_begin
+int axfer
+itxn_field TypeEnum
+txn Sender
+itxn_field AssetReceiver
+int 1
+itxn_field AssetAmount
+byte "assetIDGov"
+app_global_get
+itxn_field XferAsset
+itxn_submit
+int 1
+return
+main_l28:
+byte "bpprice"
+gtxna 1 ApplicationArgs 1
+btoi
+app_global_put
+byte "bproposer"
+gtxn 1 Sender
+app_global_put
+b main_l27
+main_l29:
+global GroupSize
+int 2
+==
+gtxn 0 TypeEnum
+int axfer
+==
+&&
+gtxn 0 AssetReceiver
+global CurrentApplicationAddress
+==
+&&
+gtxn 0 AssetAmount
+int 1
+>=
+&&
+gtxn 0 XferAsset
+byte "assetIDGov"
+app_global_get
+==
+&&
+bnz main_l31
+int 0
+return
+main_l31:
+byte "spprice"
+app_global_get
+int 0
+==
+gtxna 1 ApplicationArgs 1
+btoi
+byte "spprice"
+app_global_get
+!=
+||
+txn Sender
+byte "sproposer"
+app_global_get
+==
+||
+bnz main_l34
+byte "spprice"
+int 0
+app_global_put
+byte "scurrentPrice"
+gtxna 1 ApplicationArgs 1
+btoi
+app_global_put
+main_l33:
+itxn_begin
+int axfer
+itxn_field TypeEnum
+txn Sender
+itxn_field AssetReceiver
+int 1
+itxn_field AssetAmount
+byte "assetIDGov"
+app_global_get
+itxn_field XferAsset
+itxn_submit
+int 1
+return
+main_l34:
+byte "spprice"
+gtxna 1 ApplicationArgs 1
+btoi
+app_global_put
+byte "sproposer"
+gtxn 1 Sender
+app_global_put
+b main_l33
+main_l35:
+txn Sender
+addr HT53YLM4UX3D6N2UVU3JCRWGCHCKKSK3L3KQK3SWRDFTCB4HONKW3DYFUI
+==
+txn Sender
+addr L25QK7OMM7GLY2LMQK3M74KCXAYPHBZ3M6CJW24GIMKGDMWLIBEP6AHZGU
+==
+||
+txn Sender
+addr DZDRZBGTU6KCQVDA437J6CVIKCTWME33AMMGPLZTLTQAI7OMVFATS3NQZA
+==
+||
+bnz main_l37
+int 0
+return
+main_l37:
+itxn_begin
+int acfg
+itxn_field TypeEnum
+byte "assetIDGov"
+app_global_get
+itxn_field ConfigAsset
+itxn_submit
+itxn_begin
+int acfg
+itxn_field TypeEnum
+byte "assetIDToken"
+app_global_get
+itxn_field ConfigAsset
+itxn_submit
+itxn_begin
+int pay
+itxn_field TypeEnum
+int 0
+itxn_field Amount
+addr DZDRZBGTU6KCQVDA437J6CVIKCTWME33AMMGPLZTLTQAI7OMVFATS3NQZA
+itxn_field Receiver
+addr DZDRZBGTU6KCQVDA437J6CVIKCTWME33AMMGPLZTLTQAI7OMVFATS3NQZA
+itxn_field CloseRemainderTo
+itxn_submit
+int 1
+return
+main_l38:
+txn Sender
+addr HT53YLM4UX3D6N2UVU3JCRWGCHCKKSK3L3KQK3SWRDFTCB4HONKW3DYFUI
+==
+txn Sender
+addr L25QK7OMM7GLY2LMQK3M74KCXAYPHBZ3M6CJW24GIMKGDMWLIBEP6AHZGU
+==
+||
+txn Sender
+addr DZDRZBGTU6KCQVDA437J6CVIKCTWME33AMMGPLZTLTQAI7OMVFATS3NQZA
+==
+||
+bnz main_l40
+int 0
+return
+main_l40:
+int 1
+return
+main_l41:
+int 1
+return
+main_l42:
+txn Sender
+addr HT53YLM4UX3D6N2UVU3JCRWGCHCKKSK3L3KQK3SWRDFTCB4HONKW3DYFUI
+==
+txn Sender
+addr L25QK7OMM7GLY2LMQK3M74KCXAYPHBZ3M6CJW24GIMKGDMWLIBEP6AHZGU
+==
+||
+txn Sender
+addr DZDRZBGTU6KCQVDA437J6CVIKCTWME33AMMGPLZTLTQAI7OMVFATS3NQZA
+==
+||
+bnz main_l44
+int 1
+return
+main_l44:
+itxn_begin
+int axfer
+itxn_field TypeEnum
+txn Sender
+itxn_field AssetReceiver
+int 1
+itxn_field AssetAmount
+byte "assetIDGov"
+app_global_get
+itxn_field XferAsset
+itxn_submit
+int 1
+return
+main_l45:
+byte "bpprice"
+int 0
+app_global_put
+byte "bproposer"
+addr HT53YLM4UX3D6N2UVU3JCRWGCHCKKSK3L3KQK3SWRDFTCB4HONKW3DYFUI
+app_global_put
+byte "bcurrentPrice"
+int 900000
+app_global_put
+byte "spprice"
+int 0
+app_global_put
+byte "sproposer"
+addr HT53YLM4UX3D6N2UVU3JCRWGCHCKKSK3L3KQK3SWRDFTCB4HONKW3DYFUI
+app_global_put
+byte "scurrentPrice"
+int 1000000
+app_global_put
+byte "assetIDGov"
+int 0
+app_global_put
+byte "assetIDToken"
+int 0
+app_global_put
+byte "assetSold"
+int 0
+app_global_put
+int 1
+return

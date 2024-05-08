@@ -36,7 +36,7 @@ def optInDAO(MnemFile,appId):
     txn3=ApplicationOptInTxn(sender=Addr,sp=params,index=appId,foreign_assets=[assetId1,assetId2])
     gid=calculate_group_id([txn1,txn2,txn3])
 
-    txn1.group=txn2.group=txn3.groupgid
+    txn1.group=txn2.group=txn3.group=gid
 
     stxn1=txn1.sign(SK)
     stxn2=txn2.sign(SK)
