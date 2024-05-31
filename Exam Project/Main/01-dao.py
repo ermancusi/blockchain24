@@ -3,6 +3,7 @@ from pyteal import *
 from daoutilities import DAOtokenName, DAOGovName
 
 cmd=ScratchVar(TealType.bytes)
+total_DAO_token_assets=Int(5)
 
 def handle_start():
     h_start=If(And(Global.group_size()==Int(2),
@@ -13,9 +14,9 @@ def handle_start():
                          Seq([
                             InnerTxnBuilder.Begin(),
                             InnerTxnBuilder.SetFields({
-                                TxnField.type_enum: TxnType.AssetConfig,
-                                TxnField.config_asset_total: Int(1_000_000),
-                                TxnField.config_asset_decimals: Int(6),
+                                TxnField.type_enum: TxnType.AssetConfig,                                
+                                TxnField.config_asset_total: total_DAO_token_assets,
+                                TxnField.config_asset_decimals: Int(1),
                                 TxnField.config_asset_name: Bytes(DAOtokenName),
                                 TxnField.config_asset_unit_name: Bytes("fsd3"),
                                 TxnField.config_asset_url: Bytes("https://sites.google.com/uniurb.it/fosad/home/fosad-2022"),
@@ -144,13 +145,13 @@ def approval_program(Alice,Bob,Charlie):
             ).Then(
                     Seq([App.globalPut(Bytes("assetSold"), App.globalGet(Bytes("assetSold")) + Int(1)),
                         If(
-                            App.globalGet(Bytes("assetSold")) == Int(3)
+                            App.globalGet(Bytes("assetSold")) == int (1/2 * total_DAO_token_assets) + 1
                         ).Then(
                             Seq([App.globalPut(Bytes("scurrentPrice"), App.globalGet(Bytes("scurrentPrice")) * Int(2)),
                             ])
                         ),
                         If(
-                            App.globalGet(Bytes("assetSold")) == Int(5)
+                            App.globalGet(Bytes("assetSold")) == int (3/4 * total_DAO_token_assets) + 1
                         ).Then(
                             Seq([App.globalPut(Bytes("scurrentPrice"), App.globalGet(Bytes("scurrentPrice")) * Int(2)),
                             ])

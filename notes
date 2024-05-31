@@ -19,3 +19,6 @@
 -scrivere commenti
 
 -l'ordine degli address singoli in multiSig importa
+
+
+-https://developer.algorand.org/docs/get-details/transactions/transactions/#decimals (TxnField.config_asset_decimals)
