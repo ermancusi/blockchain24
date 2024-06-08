@@ -20,8 +20,8 @@ def main(creatorMnemFile,approvalFile):
 
     # declare application state storage (immutable)
     # define global schema
-    global_ints=9
-    global_bytes=3
+    global_ints=7
+    global_bytes=2
     globalSchema=StateSchema(global_ints,global_bytes)
 
     # define local schema

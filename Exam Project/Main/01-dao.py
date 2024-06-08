@@ -3,7 +3,12 @@ from pyteal import *
 from daoutilities import DAOtokenName, DAOGovName
 
 cmd=ScratchVar(TealType.bytes)
-total_DAO_token_assets=Int(5)
+total_DAO_token_assets=2
+threshold1=int(total_DAO_token_assets * 1/2)+1
+threshold2=int(total_DAO_token_assets * 3/4)+1
+total_DAO_token_assets=Int(total_DAO_token_assets)
+
+
 
 def handle_start():
     h_start=If(And(Global.group_size()==Int(2),
@@ -19,7 +24,7 @@ def handle_start():
                                 TxnField.config_asset_decimals: Int(1),
                                 TxnField.config_asset_name: Bytes(DAOtokenName),
                                 TxnField.config_asset_unit_name: Bytes("fsd3"),
-                                TxnField.config_asset_url: Bytes("https://sites.google.com/uniurb.it/fosad/home/fosad-2022"),
+                                TxnField.config_asset_url: Bytes("https://www.diem.unisa.it/"),
                                 TxnField.config_asset_manager: Global.current_application_address(),
                                 TxnField.config_asset_reserve: Global.current_application_address(),
                                 TxnField.config_asset_freeze: Global.current_application_address(),
@@ -34,7 +39,7 @@ def handle_start():
                                 TxnField.config_asset_decimals: Int(0),
                                 TxnField.config_asset_unit_name: Bytes("vr3"),
                                 TxnField.config_asset_name: Bytes(DAOGovName),
-                                TxnField.config_asset_url: Bytes("https://sites.google.com/uniurb.it/fosad/home/fosad-2022"),
+                                TxnField.config_asset_url: Bytes("https://web.unisa.it/"),
                                 TxnField.config_asset_manager: Global.current_application_address(),
                                 TxnField.config_asset_reserve: Global.current_application_address(),
                                 TxnField.config_asset_freeze: Global.current_application_address(),
@@ -77,18 +82,41 @@ def handle_price(prefix):
            ).Then(handle_priceTok(prefix)).Else(Reject())])
     return h_price
 
+def handle_burn():
+    return Seq([
+        # Check conditions for burn
+       # If(App.globalGet(Bytes("assetSold")) == int (9/10 * total_DAO_token_assets) + 1).Then(
+        If(App.globalGet(Bytes("assetSold")) == Int(1)).Then(
+            Seq([
+                # Burn the tokens by sending them to the null address
+                InnerTxnBuilder.Begin(),
+                InnerTxnBuilder.SetFields({
+                    TxnField.type_enum: TxnType.AssetTransfer,
+                    TxnField.asset_receiver: Addr("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ"),  # Null address
+                    #TxnField.asset_amount: Int(0.5 *(total_DAO_token_assets-App.globalGet(Bytes("assetSold")))),  # Number of tokens to burn
+                    TxnField.asset_amount: Int(1),  # Number of tokens to burn
+                    TxnField.xfer_asset: App.globalGet(Bytes("assetIDToken")),
+                }),
+                InnerTxnBuilder.Submit(),
+                Approve()
+            ])
+        ).Else(Reject())
+    ])
+
+
+
 def approval_program(Alice,Bob,Charlie):
 
     handle_creation=Seq([
-                    App.globalPut(Bytes("bpprice"),Int(0)),
-                    App.globalPut(Bytes("bproposer"),Alice),
+                    App.globalPut(Bytes("bpprice"),Int(0)),                    
                     App.globalPut(Bytes("bcurrentPrice"),Int(900_000)),
-                    App.globalPut(Bytes("spprice"),Int(0)),
-                    App.globalPut(Bytes("sproposer"),Alice),
+                    App.globalPut(Bytes("spprice"),Int(0)),                    
                     App.globalPut(Bytes("scurrentPrice"),Int(1_000_000)),
                     App.globalPut(Bytes("assetIDGov"),Int(0)),
                     App.globalPut(Bytes("assetIDToken"),Int(0)),
                     App.globalPut(Bytes("assetSold"),Int(0)),
+                    App.globalPut(Bytes("bproposer"),Alice),
+                    App.globalPut(Bytes("sproposer"),Alice),
                     Approve()])
 
     handle_optin=If(Or(Txn.sender()==Alice,
@@ -145,13 +173,13 @@ def approval_program(Alice,Bob,Charlie):
             ).Then(
                     Seq([App.globalPut(Bytes("assetSold"), App.globalGet(Bytes("assetSold")) + Int(1)),
                         If(
-                            App.globalGet(Bytes("assetSold")) == int (1/2 * total_DAO_token_assets) + 1
+                            App.globalGet(Bytes("assetSold")) == Int(threshold1)
                         ).Then(
                             Seq([App.globalPut(Bytes("scurrentPrice"), App.globalGet(Bytes("scurrentPrice")) * Int(2)),
                             ])
                         ),
                         If(
-                            App.globalGet(Bytes("assetSold")) == int (3/4 * total_DAO_token_assets) + 1
+                            App.globalGet(Bytes("assetSold")) == Int(threshold2)
                         ).Then(
                             Seq([App.globalPut(Bytes("scurrentPrice"), App.globalGet(Bytes("scurrentPrice")) * Int(2)),
                             ])
@@ -174,6 +202,7 @@ def approval_program(Alice,Bob,Charlie):
                      [cmd.load()==Bytes("bp"),handle_price("b")],
                      [cmd.load()==Bytes("b"),handle_buy],
                      [cmd.load()==Bytes("s"),handle_start()],
+                     [cmd.load() == Bytes("bb"), handle_burn()],
                 ),Approve()]
     )
 
