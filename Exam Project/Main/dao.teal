@@ -2,23 +2,23 @@
 txn ApplicationID
 int 0
 ==
-bnz main_l49
+bnz main_l47
 txn OnCompletion
 int OptIn
 ==
-bnz main_l46
+bnz main_l44
 txn OnCompletion
 int CloseOut
 ==
-bnz main_l45
+bnz main_l43
 txn OnCompletion
 int UpdateApplication
 ==
-bnz main_l42
+bnz main_l40
 txn OnCompletion
 int DeleteApplication
 ==
-bnz main_l39
+bnz main_l37
 txn OnCompletion
 int NoOp
 ==
@@ -30,49 +30,21 @@ store 0
 load 0
 byte "sp"
 ==
-bnz main_l33
+bnz main_l31
 load 0
 byte "bp"
 ==
-bnz main_l27
+bnz main_l25
 load 0
 byte "b"
 ==
-bnz main_l20
+bnz main_l16
 load 0
 byte "s"
 ==
-bnz main_l17
-load 0
-byte "bb"
-==
-bnz main_l13
+bnz main_l12
 err
-main_l13:
-byte "assetSold"
-app_global_get
-int 1
-==
-bnz main_l16
-int 0
-return
-int 1
-return
-main_l16:
-itxn_begin
-int axfer
-itxn_field TypeEnum
-addr AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ
-itxn_field AssetReceiver
-int 1
-itxn_field AssetAmount
-byte "assetIDToken"
-app_global_get
-itxn_field XferAsset
-itxn_submit
-int 1
-return
-main_l17:
+main_l12:
 global GroupSize
 int 2
 ==
@@ -88,20 +60,22 @@ gtxn 0 Amount
 int 500000
 >=
 &&
-bnz main_l19
+bnz main_l15
 int 0
 return
-main_l19:
+int 1
+return
+main_l15:
 itxn_begin
 int acfg
 itxn_field TypeEnum
 int 2
 itxn_field ConfigAssetTotal
-int 1
+int 0
 itxn_field ConfigAssetDecimals
 byte "FOSAD22Token"
 itxn_field ConfigAssetName
-byte "fsd3"
+byte "Asset"
 itxn_field ConfigAssetUnitName
 byte "https://www.diem.unisa.it/"
 itxn_field ConfigAssetURL
@@ -124,7 +98,7 @@ int 3
 itxn_field ConfigAssetTotal
 int 0
 itxn_field ConfigAssetDecimals
-byte "vr3"
+byte "Token"
 itxn_field ConfigAssetUnitName
 byte "FOSAD22-Gov"
 itxn_field ConfigAssetName
@@ -144,7 +118,7 @@ itxn CreatedAssetID
 app_global_put
 int 1
 return
-main_l20:
+main_l16:
 global GroupSize
 int 2
 ==
@@ -164,10 +138,10 @@ app_global_get
 *
 >=
 &&
-bnz main_l22
+bnz main_l18
 int 0
 return
-main_l22:
+main_l18:
 byte "assetSold"
 byte "assetSold"
 app_global_get
@@ -178,21 +152,26 @@ byte "assetSold"
 app_global_get
 int 2
 ==
-bnz main_l26
-main_l23:
+bnz main_l24
+main_l19:
 byte "assetSold"
 app_global_get
 int 2
 ==
-bnz main_l25
-main_l24:
+bnz main_l23
+main_l20:
+byte "assetSold"
+app_global_get
+int 1
+==
+bnz main_l22
+main_l21:
 itxn_begin
 int axfer
 itxn_field TypeEnum
-txn Sender
+addr WNLXWXXIOT6JIDCKJP4I35JQZFRHNUGTUBIZZLV2YADGZPMCF5QJO6P334
 itxn_field AssetReceiver
-gtxna 1 ApplicationArgs 1
-btoi
+int 1
 itxn_field AssetAmount
 byte "assetIDToken"
 app_global_get
@@ -200,23 +179,36 @@ itxn_field XferAsset
 itxn_submit
 int 1
 return
+main_l22:
+itxn_begin
+int axfer
+itxn_field TypeEnum
+addr WNLXWXXIOT6JIDCKJP4I35JQZFRHNUGTUBIZZLV2YADGZPMCF5QJO6P334
+itxn_field AssetReceiver
+int 1
+itxn_field AssetAmount
+byte "assetIDToken"
+app_global_get
+itxn_field XferAsset
+itxn_submit
+b main_l21
+main_l23:
+byte "scurrentPrice"
+byte "scurrentPrice"
+app_global_get
+int 2
+*
+app_global_put
+b main_l20
+main_l24:
+byte "scurrentPrice"
+byte "scurrentPrice"
+app_global_get
+int 2
+*
+app_global_put
+b main_l19
 main_l25:
-byte "scurrentPrice"
-byte "scurrentPrice"
-app_global_get
-int 2
-*
-app_global_put
-b main_l24
-main_l26:
-byte "scurrentPrice"
-byte "scurrentPrice"
-app_global_get
-int 2
-*
-app_global_put
-b main_l23
-main_l27:
 global GroupSize
 int 2
 ==
@@ -237,10 +229,10 @@ byte "assetIDGov"
 app_global_get
 ==
 &&
-bnz main_l29
+bnz main_l27
 int 0
 return
-main_l29:
+main_l27:
 byte "bpprice"
 app_global_get
 int 0
@@ -256,7 +248,7 @@ byte "bproposer"
 app_global_get
 ==
 ||
-bnz main_l32
+bnz main_l30
 byte "bpprice"
 int 0
 app_global_put
@@ -264,7 +256,7 @@ byte "bcurrentPrice"
 gtxna 1 ApplicationArgs 1
 btoi
 app_global_put
-main_l31:
+main_l29:
 itxn_begin
 int axfer
 itxn_field TypeEnum
@@ -278,7 +270,7 @@ itxn_field XferAsset
 itxn_submit
 int 1
 return
-main_l32:
+main_l30:
 byte "bpprice"
 gtxna 1 ApplicationArgs 1
 btoi
@@ -286,8 +278,8 @@ app_global_put
 byte "bproposer"
 gtxn 1 Sender
 app_global_put
-b main_l31
-main_l33:
+b main_l29
+main_l31:
 global GroupSize
 int 2
 ==
@@ -308,10 +300,10 @@ byte "assetIDGov"
 app_global_get
 ==
 &&
-bnz main_l35
+bnz main_l33
 int 0
 return
-main_l35:
+main_l33:
 byte "spprice"
 app_global_get
 int 0
@@ -327,7 +319,7 @@ byte "sproposer"
 app_global_get
 ==
 ||
-bnz main_l38
+bnz main_l36
 byte "spprice"
 int 0
 app_global_put
@@ -335,7 +327,7 @@ byte "scurrentPrice"
 gtxna 1 ApplicationArgs 1
 btoi
 app_global_put
-main_l37:
+main_l35:
 itxn_begin
 int axfer
 itxn_field TypeEnum
@@ -349,7 +341,7 @@ itxn_field XferAsset
 itxn_submit
 int 1
 return
-main_l38:
+main_l36:
 byte "spprice"
 gtxna 1 ApplicationArgs 1
 btoi
@@ -357,23 +349,23 @@ app_global_put
 byte "sproposer"
 gtxn 1 Sender
 app_global_put
-b main_l37
-main_l39:
+b main_l35
+main_l37:
 txn Sender
-addr RAJ3UAARU2U7BC7ZZQKIEQAFT6JIYSLF7UDQVFIJTMB3G77UWSCZKWURFA
+addr YNSTLTDAQRHQDE4ENAAGIK4G5OHBYFZMPMGJPN6MG22LJZ2Y7HK2XOSRAQ
 ==
 txn Sender
-addr GKJIVRMP34CUF7QWYTN6TBVAP6D7UQTJTHXY2WQISHQAL6RVG6QSAT4BZA
-==
-||
-txn Sender
-addr SUIDIKLLDV65CWE7W5GCTD46CSIYZW5XRJMHX6WZLKTEHMLQ7RXLSB2SJI
+addr Q4ZRQD6WQD3C37EMCDHYAMWYAA2BGHHLSCOVIYVN3PIF7BCLUQP6D7PIOM
 ==
 ||
-bnz main_l41
+txn Sender
+addr LZ3GRZT6OKIYMABUPNVSAWG24QVMF37OZQ2NRKW4BA7IL4XSTL4OQPWCCQ
+==
+||
+bnz main_l39
 int 0
 return
-main_l41:
+main_l39:
 itxn_begin
 int acfg
 itxn_field TypeEnum
@@ -393,50 +385,50 @@ int pay
 itxn_field TypeEnum
 int 0
 itxn_field Amount
-addr SUIDIKLLDV65CWE7W5GCTD46CSIYZW5XRJMHX6WZLKTEHMLQ7RXLSB2SJI
+addr LZ3GRZT6OKIYMABUPNVSAWG24QVMF37OZQ2NRKW4BA7IL4XSTL4OQPWCCQ
 itxn_field Receiver
-addr SUIDIKLLDV65CWE7W5GCTD46CSIYZW5XRJMHX6WZLKTEHMLQ7RXLSB2SJI
+addr LZ3GRZT6OKIYMABUPNVSAWG24QVMF37OZQ2NRKW4BA7IL4XSTL4OQPWCCQ
 itxn_field CloseRemainderTo
 itxn_submit
 int 1
 return
-main_l42:
+main_l40:
 txn Sender
-addr RAJ3UAARU2U7BC7ZZQKIEQAFT6JIYSLF7UDQVFIJTMB3G77UWSCZKWURFA
+addr YNSTLTDAQRHQDE4ENAAGIK4G5OHBYFZMPMGJPN6MG22LJZ2Y7HK2XOSRAQ
 ==
 txn Sender
-addr GKJIVRMP34CUF7QWYTN6TBVAP6D7UQTJTHXY2WQISHQAL6RVG6QSAT4BZA
-==
-||
-txn Sender
-addr SUIDIKLLDV65CWE7W5GCTD46CSIYZW5XRJMHX6WZLKTEHMLQ7RXLSB2SJI
+addr Q4ZRQD6WQD3C37EMCDHYAMWYAA2BGHHLSCOVIYVN3PIF7BCLUQP6D7PIOM
 ==
 ||
-bnz main_l44
+txn Sender
+addr LZ3GRZT6OKIYMABUPNVSAWG24QVMF37OZQ2NRKW4BA7IL4XSTL4OQPWCCQ
+==
+||
+bnz main_l42
 int 0
 return
-main_l44:
+main_l42:
 int 1
 return
-main_l45:
+main_l43:
+int 1
+return
+main_l44:
+txn Sender
+addr YNSTLTDAQRHQDE4ENAAGIK4G5OHBYFZMPMGJPN6MG22LJZ2Y7HK2XOSRAQ
+==
+txn Sender
+addr Q4ZRQD6WQD3C37EMCDHYAMWYAA2BGHHLSCOVIYVN3PIF7BCLUQP6D7PIOM
+==
+||
+txn Sender
+addr LZ3GRZT6OKIYMABUPNVSAWG24QVMF37OZQ2NRKW4BA7IL4XSTL4OQPWCCQ
+==
+||
+bnz main_l46
 int 1
 return
 main_l46:
-txn Sender
-addr RAJ3UAARU2U7BC7ZZQKIEQAFT6JIYSLF7UDQVFIJTMB3G77UWSCZKWURFA
-==
-txn Sender
-addr GKJIVRMP34CUF7QWYTN6TBVAP6D7UQTJTHXY2WQISHQAL6RVG6QSAT4BZA
-==
-||
-txn Sender
-addr SUIDIKLLDV65CWE7W5GCTD46CSIYZW5XRJMHX6WZLKTEHMLQ7RXLSB2SJI
-==
-||
-bnz main_l48
-int 1
-return
-main_l48:
 itxn_begin
 int axfer
 itxn_field TypeEnum
@@ -450,7 +442,7 @@ itxn_field XferAsset
 itxn_submit
 int 1
 return
-main_l49:
+main_l47:
 byte "bpprice"
 int 0
 app_global_put
@@ -473,10 +465,10 @@ byte "assetSold"
 int 0
 app_global_put
 byte "bproposer"
-addr RAJ3UAARU2U7BC7ZZQKIEQAFT6JIYSLF7UDQVFIJTMB3G77UWSCZKWURFA
+addr YNSTLTDAQRHQDE4ENAAGIK4G5OHBYFZMPMGJPN6MG22LJZ2Y7HK2XOSRAQ
 app_global_put
 byte "sproposer"
-addr RAJ3UAARU2U7BC7ZZQKIEQAFT6JIYSLF7UDQVFIJTMB3G77UWSCZKWURFA
+addr YNSTLTDAQRHQDE4ENAAGIK4G5OHBYFZMPMGJPN6MG22LJZ2Y7HK2XOSRAQ
 app_global_put
 int 1
 return

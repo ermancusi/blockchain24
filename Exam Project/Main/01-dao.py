@@ -7,7 +7,7 @@ total_DAO_token_assets=2
 threshold1=int(total_DAO_token_assets * 1/2)+1
 threshold2=int(total_DAO_token_assets * 3/4)+1
 total_DAO_token_assets=Int(total_DAO_token_assets)
-
+total_Gov_token_assets=Int(3)
 
 
 def handle_start():
@@ -21,9 +21,9 @@ def handle_start():
                             InnerTxnBuilder.SetFields({
                                 TxnField.type_enum: TxnType.AssetConfig,                                
                                 TxnField.config_asset_total: total_DAO_token_assets,
-                                TxnField.config_asset_decimals: Int(1),
+                                TxnField.config_asset_decimals: Int(0),
                                 TxnField.config_asset_name: Bytes(DAOtokenName),
-                                TxnField.config_asset_unit_name: Bytes("fsd3"),
+                                TxnField.config_asset_unit_name: Bytes("Asset"),
                                 TxnField.config_asset_url: Bytes("https://www.diem.unisa.it/"),
                                 TxnField.config_asset_manager: Global.current_application_address(),
                                 TxnField.config_asset_reserve: Global.current_application_address(),
@@ -35,9 +35,9 @@ def handle_start():
                             InnerTxnBuilder.Begin(),
                             InnerTxnBuilder.SetFields({
                                 TxnField.type_enum: TxnType.AssetConfig,
-                                TxnField.config_asset_total: Int(3),
+                                TxnField.config_asset_total: total_Gov_token_assets,
                                 TxnField.config_asset_decimals: Int(0),
-                                TxnField.config_asset_unit_name: Bytes("vr3"),
+                                TxnField.config_asset_unit_name: Bytes("Token"),
                                 TxnField.config_asset_name: Bytes(DAOGovName),
                                 TxnField.config_asset_url: Bytes("https://web.unisa.it/"),
                                 TxnField.config_asset_manager: Global.current_application_address(),
@@ -81,29 +81,6 @@ def handle_price(prefix):
                   Gtxn[0].xfer_asset()==App.globalGet(Bytes("assetIDGov")),)
            ).Then(handle_priceTok(prefix)).Else(Reject())])
     return h_price
-
-def handle_burn():
-    return Seq([
-        # Check conditions for burn
-       # If(App.globalGet(Bytes("assetSold")) == int (9/10 * total_DAO_token_assets) + 1).Then(
-        If(App.globalGet(Bytes("assetSold")) == Int(1)).Then(
-            Seq([
-                # Burn the tokens by sending them to the null address
-                InnerTxnBuilder.Begin(),
-                InnerTxnBuilder.SetFields({
-                    TxnField.type_enum: TxnType.AssetTransfer,
-                    TxnField.asset_receiver: Addr("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ"),  # Null address
-                    #TxnField.asset_amount: Int(0.5 *(total_DAO_token_assets-App.globalGet(Bytes("assetSold")))),  # Number of tokens to burn
-                    TxnField.asset_amount: Int(1),  # Number of tokens to burn
-                    TxnField.xfer_asset: App.globalGet(Bytes("assetIDToken")),
-                }),
-                InnerTxnBuilder.Submit(),
-                Approve()
-            ])
-        ).Else(Reject())
-    ])
-
-
 
 def approval_program(Alice,Bob,Charlie):
 
@@ -198,21 +175,20 @@ def approval_program(Alice,Bob,Charlie):
 
     handle_noop=Seq([
                 cmd.store(Txn.application_args[0]),
-                Cond([cmd.load()==Bytes("sp"),handle_price("s")],
-                     [cmd.load()==Bytes("bp"),handle_price("b")],
-                     [cmd.load()==Bytes("b"),handle_buy],
-                     [cmd.load()==Bytes("s"),handle_start()],
-                     [cmd.load() == Bytes("bb"), handle_burn()],
+                Cond([cmd.load()==Bytes("sp"), handle_price("s")],
+                     [cmd.load()==Bytes("bp"), handle_price("b")],
+                     [cmd.load()==Bytes("b"),  handle_buy],
+                     [cmd.load()==Bytes("s"),  handle_start()]
                 ),Approve()]
     )
 
     program = Cond(
-        [Txn.application_id()==Int(0), handle_creation],
-        [Txn.on_completion()==OnComplete.OptIn, handle_optin],
-        [Txn.on_completion()==OnComplete.CloseOut, handle_closeout],
-        [Txn.on_completion()==OnComplete.UpdateApplication, handle_updateapp],
-        [Txn.on_completion()==OnComplete.DeleteApplication, handle_deleteapp],
-        [Txn.on_completion()==OnComplete.NoOp, handle_noop]
+        [Txn.application_id() == Int(0), handle_creation],
+        [Txn.on_completion()  == OnComplete.OptIn, handle_optin],
+        [Txn.on_completion()  == OnComplete.CloseOut, handle_closeout],
+        [Txn.on_completion()  == OnComplete.UpdateApplication, handle_updateapp],
+        [Txn.on_completion()  == OnComplete.DeleteApplication, handle_deleteapp],
+        [Txn.on_completion()  == OnComplete.NoOp, handle_noop]
     )
 
     return compileTeal(program, Mode.Application, version=5)

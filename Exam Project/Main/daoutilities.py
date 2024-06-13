@@ -1,7 +1,7 @@
 import base64
 
-DAOtokenName="FOSAD22Token"
-DAOGovName="FOSAD22-Gov"
+DAOtokenName="Asset_UniSA"
+DAOGovName="Token_Gov"
 
 #return list of all assets
 def getAllAssets(Addr,algodClient):
