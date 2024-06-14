@@ -20,7 +20,7 @@ def startApp(mnemFile,index):
     ptxn=PaymentTxn(Addr,params,appAddr,2_000_000)
 
     #application call to start as indicated by argument s
-    ctxn=ApplicationNoOpTxn(sender=Addr,sp=params,index=index,app_args=["s".encode()])
+    ctxn=ApplicationNoOpTxn(sender=Addr,sp=params,index=index,app_args=["start".encode()])
 
     gid=calculate_group_id([ptxn,ctxn])
     ctxn.group=gid

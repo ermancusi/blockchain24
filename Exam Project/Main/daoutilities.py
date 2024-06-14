@@ -28,6 +28,10 @@ def getGlobalVar(appIndex,varName,algodClient):
         if key==varName:
             return kk['value']['uint']
 
+#get the buying price
+def getBuyingPrice(appIndex,algodClient):
+   return getGlobalVar(appIndex,"bcurrentPrice",algodClient)
+
 #get the selling price
 def getSellingPrice(appIndex,algodClient):
    return getGlobalVar(appIndex,"scurrentPrice",algodClient)

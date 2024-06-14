@@ -1,6 +1,6 @@
 import sys
 from utilities import wait_for_confirmation, getSKAddr
-from daoutilities import getAssetIdFromName, getSellingPrice, DAOtokenName
+from daoutilities import getAssetIdFromName, getBuyingPrice, DAOtokenName
 from algosdk.transaction import ApplicationNoOpTxn, PaymentTxn,calculate_group_id
 import algosdk.encoding as e
 from algosdk.v2client import algod
@@ -18,11 +18,11 @@ def buy(MnemFile,appIndex,nAssets):
     appAddr=e.encode_address(e.checksum(b'appID'+appIndex.to_bytes(8, 'big')))
     print("App Addr: ",appAddr)
 
-    price=getSellingPrice(appIndex,algodClient)
+    price=getBuyingPrice(appIndex,algodClient)
     if price is None:
         print("Cannot find price")
         exit()
-    print("Price:    ",price)
+    print("Buying Price:    ",price)
 
     assetId=getAssetIdFromName(appAddr,DAOtokenName,algodClient)
 
@@ -31,12 +31,10 @@ def buy(MnemFile,appIndex,nAssets):
 
     print("Asset Id: ",assetId)
 
-
-
     ptxn=PaymentTxn(sender=Addr,sp=params,receiver=appAddr,amt=price*nAssets)
-    ctxn=ApplicationNoOpTxn(sender=Addr,sp=params,index=appIndex,app_args=["b".encode(),nAssets.to_bytes(8,'big')],foreign_assets=[assetId])
-    appAddr=e.encode_address(e.checksum(b'appID'+appIndex.to_bytes(8, 'big')))
+    ctxn=ApplicationNoOpTxn(sender=Addr,sp=params,index=appIndex,app_args=["buy".encode(),nAssets.to_bytes(8,'big')],foreign_assets=[assetId])
     gid=calculate_group_id([ptxn,ctxn])
+
     ptxn.group=ctxn.group=gid
    
     sptxn=ptxn.sign(SK)

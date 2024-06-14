@@ -146,19 +146,19 @@ def approval_program(Alice,Bob,Charlie):
     handle_buy=If(And(Global.group_size()==Int(2),
                   Gtxn[0].type_enum()==TxnType.Payment,
                   Gtxn[0].receiver()==Global.current_application_address(),
-                  Gtxn[0].amount()>=Btoi(Gtxn[1].application_args[1])*App.globalGet(Bytes("scurrentPrice")))
+                  Gtxn[0].amount()>=Btoi(Gtxn[1].application_args[1])*App.globalGet(Bytes("bcurrentPrice")))
             ).Then(
                     Seq([App.globalPut(Bytes("assetSold"), App.globalGet(Bytes("assetSold")) + Int(1)),
                         If(
                             App.globalGet(Bytes("assetSold")) == Int(threshold1)
                         ).Then(
-                            Seq([App.globalPut(Bytes("scurrentPrice"), App.globalGet(Bytes("scurrentPrice")) * Int(2)),
+                            Seq([App.globalPut(Bytes("bcurrentPrice"), App.globalGet(Bytes("bcurrentPrice")) * Int(2)),
                             ])
                         ),
                         If(
                             App.globalGet(Bytes("assetSold")) == Int(threshold2)
                         ).Then(
-                            Seq([App.globalPut(Bytes("scurrentPrice"), App.globalGet(Bytes("scurrentPrice")) * Int(2)),
+                            Seq([App.globalPut(Bytes("bcurrentPrice"), App.globalGet(Bytes("bcurrentPrice")) * Int(2)),
                             ])
                         ),
                      InnerTxnBuilder.Begin(),
@@ -171,14 +171,37 @@ def approval_program(Alice,Bob,Charlie):
                       InnerTxnBuilder.Submit(),
                       Approve()
             ])
+
             ).Else(Reject())
+    
+    handle_sell= If(And(Global.group_size() == Int(2),
+                  Gtxn[0].type_enum() == TxnType.AssetTransfer,
+                  Gtxn[0].asset_receiver() == Global.current_application_address(),
+                  Gtxn[0].xfer_asset() == App.globalGet(Bytes("assetIDToken")),
+                  Gtxn[0].asset_amount() >= Btoi(Gtxn[1].application_args[1])
+                  )
+              ).Then(
+                  Seq([
+                      # Send payment to the seller
+                      InnerTxnBuilder.Begin(),
+                      InnerTxnBuilder.SetFields({
+                          TxnField.type_enum: TxnType.Payment,
+                          TxnField.receiver: Txn.sender(),
+                          TxnField.amount: Btoi(Gtxn[1].application_args[1]) * App.globalGet(Bytes("scurrentPrice"))
+                      }),
+                      InnerTxnBuilder.Submit(),
+                      Approve()
+                  ])
+              ).Else(Reject())
+
 
     handle_noop=Seq([
                 cmd.store(Txn.application_args[0]),
                 Cond([cmd.load()==Bytes("sp"), handle_price("s")],
                      [cmd.load()==Bytes("bp"), handle_price("b")],
-                     [cmd.load()==Bytes("b"),  handle_buy],
-                     [cmd.load()==Bytes("s"),  handle_start()]
+                     [cmd.load()==Bytes("buy"),  handle_buy],
+                     [cmd.load()==Bytes("sell"), handle_sell],
+                     [cmd.load()==Bytes("start"),  handle_start()]
                 ),Approve()]
     )
 
