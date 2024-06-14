@@ -1,17 +1,16 @@
 import sys
-import base64
-from algosdk import account, mnemonic
-from algosdk.v2client import algod
-from algosdk.future.transaction import ApplicationClearStateTxn
-from algosdk.future import transaction
-from utilities import wait_for_confirmation, getClient, getSKAddr
+from algosdk.transaction import ApplicationClearStateTxn
+from algosdk import transaction
+from utilities import wait_for_confirmation, getSKAddr
 from daoutilities import getAllApps
+from algosdk.v2client import algod
 
-def main(MnemFile,directory):
+algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
+algodToken="" #free service does not require tokens
 
-    algodClient=getClient(directory)
+def main(MnemFile): 
+    algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
-
     SK,Addr=getSKAddr(MnemFile)
 
     listIndex=getAllApps(Addr,algodClient)
@@ -31,13 +30,12 @@ def main(MnemFile,directory):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=3:
-        print("usage: python3 "+sys.argv[0]+" <mnem> <node directory>")
+    if len(sys.argv)!=2:
+        print("usage: python3 "+sys.argv[0]+" <mnem>")
         exit()
 
     MnemFile=sys.argv[1]
-    directory=sys.argv[2]
 
-    main(MnemFile,directory)
+    main(MnemFile)
     
     

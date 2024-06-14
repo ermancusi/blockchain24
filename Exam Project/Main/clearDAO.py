@@ -1,23 +1,22 @@
 import sys
-#import json
-import base64
-#from algosdk import account, mnemonic
-from algosdk.v2client import algod
-from algosdk.future.transaction import ApplicationClearStateTxn, AssetCloseOutTxn
-from utilities import wait_for_confirmation, getClient, getSKAddr
+from algosdk.transaction import ApplicationClearStateTxn, AssetCloseOutTxn
+from utilities import wait_for_confirmation, getSKAddr
 import algosdk.encoding as e
 from daoutilities import getAssetIdFromName, getAssetCreator, DAOtokenName
+from algosdk.v2client import algod
 
-def clearDAO(MnemFile,appId,directory):
+algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
+algodToken="" #free service does not require tokens
 
-    algodClient=getClient(directory)
+def clearDAO(MnemFile,appId):
+    algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
-
     SK,Addr=getSKAddr(MnemFile)
+
     print("User addr:",Addr)
 
     appAddr=e.encode_address(e.checksum(b'appID'+appId.to_bytes(8, 'big')))
-    accountInfo=algodClient.account_info(appAddr)
+    
     print("App id:   ",appId)
     print("App addr: ",appAddr)
 
@@ -49,14 +48,13 @@ def clearDAO(MnemFile,appId,directory):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=4:
-        print("usage: python3 "+sys.argv[0]+" <mnem> <app index> <node directory>")
+    if len(sys.argv)!=3:
+        print("usage: python3 "+sys.argv[0]+" <mnem> <app index>")
         exit()
 
     MnemFile=sys.argv[1]
-    appId=int(sys.argv[2])
-    directory=sys.argv[3]
+    appId=int(sys.argv[2])   
 
-    clearDAO(MnemFile,appId,directory)
+    clearDAO(MnemFile,appId)
     
     

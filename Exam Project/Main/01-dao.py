@@ -78,7 +78,7 @@ def handle_price(prefix):
                   Gtxn[0].type_enum()==TxnType.AssetTransfer,
                   Gtxn[0].asset_receiver()==Global.current_application_address(),
                   Gtxn[0].asset_amount()>=Int(1),
-                  Gtxn[0].xfer_asset()==App.globalGet(Bytes("assetIDGov")),)
+                  Gtxn[0].xfer_asset()==App.globalGet(Bytes("assetIDGov")))
            ).Then(handle_priceTok(prefix)).Else(Reject())])
     return h_price
 

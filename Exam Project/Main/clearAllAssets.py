@@ -1,21 +1,17 @@
 import sys
-import base64
-from algosdk import account, mnemonic
 from algosdk.v2client import algod
-from algosdk.future.transaction import AssetCloseOutTxn, AssetDestroyTxn
-from algosdk.future import transaction
-from utilities import wait_for_confirmation, getClient
+from algosdk.transaction import AssetCloseOutTxn, AssetDestroyTxn
+from utilities import wait_for_confirmation, getSKAddr
 from daoutilities import getAllAssets, getAssetCreator, getAmountAssetFromAddrIndex
 
-def removeAllAssets(MnemFile,directory):
+algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
+algodToken="" #free service does not require tokens
 
-    algodClient=getClient(directory)
+def removeAllAssets(MnemFile): 
+
+    algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
-
-    with open(MnemFile,'r') as f:
-        Mnem=f.read()
-    SK=mnemonic.to_private_key(Mnem)
-    Addr=account.address_from_private_key(SK)
+    SK,Addr=getSKAddr(MnemFile)
 
     listAssets=getAllAssets(Addr,algodClient)
     print(f'Found {len(listAssets)} assets for address {Addr}')
@@ -47,10 +43,10 @@ def removeAllAssets(MnemFile,directory):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=3:
-        print("usage: python "+sys.argv[0]+" <mnem> <node directory>")
+    if len(sys.argv)!=2:
+        print("usage: python "+sys.argv[0]+" <mnem>")
         exit()
 
     MnemFile=sys.argv[1]
-    directory=sys.argv[2]
-    removeAllAssets(MnemFile,directory)
+  
+    removeAllAssets(MnemFile)

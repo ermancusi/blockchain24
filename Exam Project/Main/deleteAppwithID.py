@@ -1,21 +1,19 @@
 import sys
-import json
-import base64
-from algosdk import account, mnemonic
-from algosdk.v2client import algod
-from algosdk.future.transaction import ApplicationDeleteTxn
-from utilities import wait_for_confirmation, getClient
+from algosdk.transaction import ApplicationDeleteTxn
+from utilities import wait_for_confirmation, getSKAddr
 import algosdk.encoding as e
+from algosdk.v2client import algod
 
-def deleteApp(MnemFile,appId,directory):
+algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
+algodToken="" #free service does not require tokens
 
-    algodClient=getClient(directory)
+def deleteApp(MnemFile,appId):
+
+    algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
+    SK,Addr=getSKAddr(MnemFile)
 
-    with open(MnemFile,'r') as f:
-        Mnem=f.read()
-    SK=mnemonic.to_private_key(Mnem)
-    Addr=account.address_from_private_key(SK)
+
     print("User addr:",Addr)
 
     appAddr=e.encode_address(e.checksum(b'appID'+appId.to_bytes(8, 'big')))
@@ -34,14 +32,13 @@ def deleteApp(MnemFile,appId,directory):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=4:
-        print("usage: python3 "+sys.argv[0]+" <mnem> <app index> <node directory>")
+    if len(sys.argv)!=3:
+        print("usage: python3 "+sys.argv[0]+" <mnem> <app index>")
         exit()
 
     MnemFile=sys.argv[1]
     appId=int(sys.argv[2])
-    directory=sys.argv[3]
 
-    deleteApp(MnemFile,appId,directory)
+    deleteApp(MnemFile,appId)
     
     

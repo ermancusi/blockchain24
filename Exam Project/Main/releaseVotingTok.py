@@ -1,14 +1,16 @@
 import sys
-from algosdk.future.transaction import AssetTransferTxn
+from algosdk.transaction import AssetTransferTxn
 import algosdk.encoding as e
-from utilities import wait_for_confirmation, getClient, getSKAddr
+from utilities import wait_for_confirmation,getSKAddr
 from daoutilities import getAssetIdFromName, DAOGovName
+from algosdk.v2client import algod
 
-def transfer(directory,senderMNEMFile,appId):
+algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
+algodToken="" #free service does not require tokens
 
-    algodClient=getClient(directory)
+def transfer(senderMNEMFile,appId):
+    algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
-    
     senderSK,senderAddr=getSKAddr(senderMNEMFile)
 
     appAddr=e.encode_address(e.checksum(b'appID'+appId.to_bytes(8, 'big')))
@@ -27,11 +29,10 @@ def transfer(directory,senderMNEMFile,appId):
 
 
 if __name__=="__main__":
-    if (len(sys.argv)!=4):
-        print("Usage: python3 "+sys.argv[0],"<sender MNEM file> <appId> <NodeDir>")
+    if (len(sys.argv)!=3):
+        print("Usage: python3 "+sys.argv[0],"<sender MNEM file> <appId>")
         exit()
     senderMNEMFile=sys.argv[1]
     appId=int(sys.argv[2])
-    directory=sys.argv[3]
 
-    transfer(directory,senderMNEMFile,appId)
+    transfer(senderMNEMFile,appId)
