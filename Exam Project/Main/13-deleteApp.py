@@ -50,7 +50,7 @@ if __name__=='__main__':
     appId=0
     with open("AppID.txt", 'r') as file:
         appId = int(file.read())
-
+    
     deleteApp(MnemFile, appId)
 
     

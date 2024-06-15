@@ -25,13 +25,14 @@ def transfer(senderMNEMFile,appId):
     print("Tx id:    ",txid)
 
     wait_for_confirmation(algodClient,txid,4)
-    exit()
 
 
 if __name__=="__main__":
-    senderMNEMFile="Accounts/Alice/Alice.mnem"
     appId=0
     with open("AppID.txt", 'r') as file:
         appId = int(file.read())
 
-    transfer(senderMNEMFile,appId)
+    founders=["Accounts/Bob/Bob.mnem","Accounts/Charlie/Charlie.mnem","Accounts/Alice/Alice.mnem"]
+
+    for senderMNEMFile in founders:         
+        transfer(senderMNEMFile,appId)
