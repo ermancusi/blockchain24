@@ -6,10 +6,9 @@
 06-price: OK
 07-buy: OK
 08-sell: OK
-
-clearAllApp: 
-clearAllAssets:
-clearDAO: 
-deleteApp: 
-releaseVotingTok: 
+clearAllApp: OK
+clearAllAssets: OK
+clearDAO: OK
+deleteApp: OK
+releaseVotingTok: OK
 

@@ -29,7 +29,7 @@ def transfer(senderMNEMFile,appId):
 
 
 if __name__=="__main__":
-    senderMNEMFile="Accounts/Bob/Bob.mnem"
+    senderMNEMFile="Accounts/Alice/Alice.mnem"
     appId=0
     with open("AppID.txt", 'r') as file:
         appId = int(file.read())

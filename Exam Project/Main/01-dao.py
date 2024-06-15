@@ -137,8 +137,8 @@ def approval_program(Alice,Bob,Charlie):
                                     InnerTxnBuilder.SetFields({
                                         TxnField.type_enum: TxnType.Payment,
                                         TxnField.amount: Int(0),
-                                        TxnField.receiver: Charlie,
-                                        TxnField.close_remainder_to: Charlie,
+                                        TxnField.receiver: Alice,
+                                        TxnField.close_remainder_to: Alice,
                                     }),
                                 InnerTxnBuilder.Submit(),
                                 Approve()])).Else(Reject())
