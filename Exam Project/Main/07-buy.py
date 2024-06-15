@@ -1,4 +1,3 @@
-import sys
 from utilities import wait_for_confirmation, getSKAddr
 from daoutilities import getAssetIdFromName, getBuyingPrice, DAOtokenName
 from algosdk.transaction import ApplicationNoOpTxn, PaymentTxn,calculate_group_id
@@ -50,13 +49,13 @@ def buy(MnemFile,appIndex,nAssets):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=4:
-        print("usage: python3 "+sys.argv[0]+" <mnem> <app index> <nAssets>")
-        exit()
+    mnemFile="Accounts/Alice/Alice.mnem"
 
-    mnemFile=sys.argv[1]
-    appIndex=int(sys.argv[2])
-    nAssets=int(sys.argv[3])
+    appIndex=0
+    with open("AppID.txt", 'r') as file:
+        appIndex = int(file.read())
+
+    nAssets=1
     
     buy(mnemFile,appIndex,nAssets)
     

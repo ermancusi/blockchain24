@@ -1,4 +1,3 @@
-import sys
 from algosdk.transaction import AssetTransferTxn
 import algosdk.encoding as e
 from utilities import wait_for_confirmation,getSKAddr
@@ -19,6 +18,7 @@ def transfer(senderMNEMFile,appId):
     if assetId==None:
         print("Could not find asset")
     print("Asset id: ",assetId)
+    
     txn=AssetTransferTxn(sender=senderAddr,sp=params,receiver=appAddr,amt=1,index=assetId)
     stxn=txn.sign(senderSK)
     txid=algodClient.send_transaction(stxn)
@@ -29,10 +29,9 @@ def transfer(senderMNEMFile,appId):
 
 
 if __name__=="__main__":
-    if (len(sys.argv)!=3):
-        print("Usage: python3 "+sys.argv[0],"<sender MNEM file> <appId>")
-        exit()
-    senderMNEMFile=sys.argv[1]
-    appId=int(sys.argv[2])
+    senderMNEMFile="Accounts/Bob/Bob.mnem"
+    appId=0
+    with open("AppID.txt", 'r') as file:
+        appId = int(file.read())
 
     transfer(senderMNEMFile,appId)

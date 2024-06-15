@@ -1,0 +1,15 @@
+01-dao: OK
+02-create: OK
+03-start: OK
+04-optinFounder: OK
+05-optinUser: OK
+06-price: OK
+07-buy: OK
+08-sell: OK
+
+clearAllApp: 
+clearAllAssets:
+clearDAO: 
+deleteApp: 
+releaseVotingTok: 
+

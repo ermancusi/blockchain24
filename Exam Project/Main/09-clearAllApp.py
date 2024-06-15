@@ -1,4 +1,3 @@
-import sys
 from algosdk.transaction import ApplicationClearStateTxn
 from algosdk import transaction
 from utilities import wait_for_confirmation, getSKAddr
@@ -8,6 +7,9 @@ from algosdk.v2client import algod
 algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
 
+"""
+Make a transaction that will clear a user's state for an application
+"""
 def main(MnemFile): 
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
@@ -30,11 +32,7 @@ def main(MnemFile):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=2:
-        print("usage: python3 "+sys.argv[0]+" <mnem>")
-        exit()
-
-    MnemFile=sys.argv[1]
+    MnemFile="Accounts/Alice/Alice.mnem"
 
     main(MnemFile)
     

@@ -1,4 +1,3 @@
-import sys
 from algosdk.v2client import algod
 from algosdk.transaction import AssetCloseOutTxn, AssetDestroyTxn
 from utilities import wait_for_confirmation, getSKAddr
@@ -6,6 +5,10 @@ from daoutilities import getAllAssets, getAssetCreator, getAmountAssetFromAddrIn
 
 algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
+
+"""
+Make a transaction that will send all of an ASA away, and opt out of it
+"""
 
 def removeAllAssets(MnemFile): 
 
@@ -43,10 +46,6 @@ def removeAllAssets(MnemFile):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=2:
-        print("usage: python "+sys.argv[0]+" <mnem>")
-        exit()
-
-    MnemFile=sys.argv[1]
+    MnemFile="Accounts/Alice/Alice.mnem"
   
     removeAllAssets(MnemFile)

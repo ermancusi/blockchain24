@@ -1,4 +1,3 @@
-import sys
 from algosdk.transaction import ApplicationClearStateTxn, AssetCloseOutTxn
 from utilities import wait_for_confirmation, getSKAddr
 import algosdk.encoding as e
@@ -8,6 +7,12 @@ from algosdk.v2client import algod
 algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
 
+
+"""
+-Make a transaction that will send all of an ASA away, and opt out of it
+
+-Make a transaction that will clear a user's state for an application
+"""
 def clearDAO(MnemFile,appId):
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
@@ -48,12 +53,10 @@ def clearDAO(MnemFile,appId):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=3:
-        print("usage: python3 "+sys.argv[0]+" <mnem> <app index>")
-        exit()
-
-    MnemFile=sys.argv[1]
-    appId=int(sys.argv[2])   
+    MnemFile="Accounts/Alice/Alice.mnem"
+    appId=0
+    with open("AppID.txt", 'r') as file:
+        appId = int(file.read())
 
     clearDAO(MnemFile,appId)
     

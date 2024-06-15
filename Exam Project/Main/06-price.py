@@ -47,14 +47,17 @@ def proposePrice(MnemFile,appIndex,price,prefix):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=5:
-        print("usage: python3 "+sys.argv[0]+" <mnem> <app index> <price> s/b")
+    if len(sys.argv)!=4:
+        print("usage: python3 "+sys.argv[0]+" <mnem> <price> s/b")
         exit()
 
-    MnemFile=sys.argv[1]
-    appIndex=int(sys.argv[2])
-    price=int(sys.argv[3])
-    prefix=sys.argv[4]+"p"
+    appIndex=0
+    with open("AppID.txt", 'r') as file:
+        appIndex = int(file.read())
+
+    MnemFile=sys.argv[1]    
+    price=int(sys.argv[2])
+    prefix=sys.argv[3]+"p"
    
     proposePrice(MnemFile,appIndex,price,prefix)
     

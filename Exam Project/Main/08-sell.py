@@ -1,4 +1,3 @@
-import sys
 from utilities import wait_for_confirmation, getSKAddr
 from daoutilities import getAssetIdFromName, getSellingPrice, DAOtokenName
 from algosdk.transaction import ApplicationNoOpTxn, AssetTransferTxn, calculate_group_id
@@ -18,7 +17,7 @@ def sell(MnemFile, appIndex, nAssets):
     appAddr = e.encode_address(e.checksum(b'appID' + appIndex.to_bytes(8, 'big')))
     print("App Addr: ", appAddr)
 
-    price = getSellingPrice(appIndex, algodClient)  # Use a new function to get the buying price
+    price = getSellingPrice(appIndex, algodClient)  
     if price is None:
         print("Cannot find price")
         exit()
@@ -48,12 +47,12 @@ def sell(MnemFile, appIndex, nAssets):
     confirmed_txn = wait_for_confirmation(algodClient, txId, 4)  
 
 if __name__ == '__main__':
-    if len(sys.argv) != 4:
-        print("usage: python3 " + sys.argv[0] + " <mnem> <app index> <nAssets>")
-        exit()
+    mnemFile="Accounts/Frank/Frank.mnem"
 
-    mnemFile = sys.argv[1]
-    appIndex = int(sys.argv[2])
-    nAssets = int(sys.argv[3])
+    appIndex=0
+    with open("AppID.txt", 'r') as file:
+        appIndex = int(file.read())
+
+    nAssets=1
     
     sell(mnemFile, appIndex, nAssets)

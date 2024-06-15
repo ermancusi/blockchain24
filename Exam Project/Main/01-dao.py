@@ -1,9 +1,8 @@
-import sys
 from pyteal import *
 from daoutilities import DAOtokenName, DAOGovName
 
 cmd=ScratchVar(TealType.bytes)
-total_DAO_token_assets=2
+total_DAO_token_assets=1_000_000
 threshold1=int(total_DAO_token_assets * 1/2)+1
 threshold2=int(total_DAO_token_assets * 3/4)+1
 total_DAO_token_assets=Int(total_DAO_token_assets)
@@ -83,7 +82,6 @@ def handle_price(prefix):
     return h_price
 
 def approval_program(Alice,Bob,Charlie):
-
     handle_creation=Seq([
                     App.globalPut(Bytes("bpprice"),Int(0)),                    
                     App.globalPut(Bytes("bcurrentPrice"),Int(900_000)),
@@ -94,6 +92,8 @@ def approval_program(Alice,Bob,Charlie):
                     App.globalPut(Bytes("assetSold"),Int(0)),
                     App.globalPut(Bytes("bproposer"),Alice),
                     App.globalPut(Bytes("sproposer"),Alice),
+                    App.globalPut(Bytes("flagTh1"),Int(0)),
+                    App.globalPut(Bytes("flagTh2"),Int(0)),
                     Approve()])
 
     handle_optin=If(Or(Txn.sender()==Alice,
@@ -150,15 +150,17 @@ def approval_program(Alice,Bob,Charlie):
             ).Then(
                     Seq([App.globalPut(Bytes("assetSold"), App.globalGet(Bytes("assetSold")) + Int(1)),
                         If(
-                            App.globalGet(Bytes("assetSold")) == Int(threshold1)
+                            And(App.globalGet(Bytes("assetSold")) >= Int(threshold1), App.globalGet(Bytes("flagTh1")) == Int(0), App.globalGet(Bytes("assetSold")) < Int(threshold2))
                         ).Then(
                             Seq([App.globalPut(Bytes("bcurrentPrice"), App.globalGet(Bytes("bcurrentPrice")) * Int(2)),
+                            App.globalPut(Bytes("flagTh1"), App.globalGet(Bytes("flagTh1")) + Int(1)),
                             ])
                         ),
                         If(
-                            App.globalGet(Bytes("assetSold")) == Int(threshold2)
+                            And(App.globalGet(Bytes("flagTh2")) == Int(0), App.globalGet(Bytes("assetSold")) >= Int(threshold2))
                         ).Then(
                             Seq([App.globalPut(Bytes("bcurrentPrice"), App.globalGet(Bytes("bcurrentPrice")) * Int(2)),
+                                 App.globalPut(Bytes("flagTh2"), App.globalGet(Bytes("flagTh2")) + Int(1)),
                             ])
                         ),
                      InnerTxnBuilder.Begin(),
@@ -182,7 +184,6 @@ def approval_program(Alice,Bob,Charlie):
                   )
               ).Then(
                   Seq([
-                      # Send payment to the seller
                       InnerTxnBuilder.Begin(),
                       InnerTxnBuilder.SetFields({
                           TxnField.type_enum: TxnType.Payment,
@@ -217,22 +218,19 @@ def approval_program(Alice,Bob,Charlie):
     return compileTeal(program, Mode.Application, version=5)
 
 if __name__=='__main__':
-    if len(sys.argv)!=4:
-        print("Usage: python",sys.argv[0],"<Alice ADDR file> <Bob ADDR file> <Charlie ADDR file>")
-        exit()
-
-    with open(sys.argv[1]) as f:
+    with open("Accounts/Alice/Alice.addr") as f:
         aliceA=f.read()
     alice=Addr(aliceA)
 
-    with open(sys.argv[2]) as f:
+    with open("Accounts/Bob/Bob.addr") as f:
         bobA=f.read()
     bob=Addr(bobA)
     
-    with open(sys.argv[3]) as f:
+    with open("Accounts/Charlie/Charlie.addr") as f:
         charlieA=f.read()
     charlie=Addr(charlieA)
 
     program=approval_program(alice,bob,charlie)
+    
     with open("dao.teal","w") as f:
         f.write(program)

@@ -1,4 +1,3 @@
-import sys
 import base64
 from utilities import wait_for_confirmation, getSKAddr
 from algosdk.transaction import ApplicationCreateTxn, OnComplete, StateSchema
@@ -18,13 +17,11 @@ def main(creatorMnemFile,approvalFile):
     print("Creator address: ",creatorAddr)
 
 
-    # declare application state storage (immutable)
-    # define global schema
-    global_ints=7
+    global_ints=9
     global_bytes=2
     globalSchema=StateSchema(global_ints,global_bytes)
 
-    # define local schema
+    
     local_ints=0
     local_bytes=0
     localSchema=StateSchema(local_ints,local_bytes)
@@ -51,16 +48,17 @@ def main(creatorMnemFile,approvalFile):
     wait_for_confirmation(algodClient,txId,4)
     txResponse=algodClient.pending_transaction_info(txId)
     appId=txResponse['application-index']
+    
+    with open("AppID.txt", 'w') as file:
+        file.write(str(appId))
+    print(f"Successfully wrote appId '{appId}' to AppID.txt")
+        
     print("App id:          ",appId)
     print("App address:     ",e.encode_address(e.checksum(b'appID'+appId.to_bytes(8, 'big'))))
 
 if __name__=='__main__':
-    if len(sys.argv)!=3:
-        print("usage: python3 "+sys.argv[0]+" <creator mnem> <approval file>")
-        exit()
-
-    creatorMnemFile=sys.argv[1]
-    approvalFile=sys.argv[2]
+    creatorMnemFile="Accounts/Alice/Alice.mnem"
+    approvalFile="dao.teal"
     
 
     main(creatorMnemFile,approvalFile)

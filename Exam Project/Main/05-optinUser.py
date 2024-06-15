@@ -1,4 +1,3 @@
-import sys
 from utilities import wait_for_confirmation, getSKAddr
 from daoutilities import getAssetIdFromName, DAOtokenName
 from algosdk.transaction import ApplicationOptInTxn, AssetTransferTxn, calculate_group_id
@@ -45,13 +44,12 @@ def optInDAO(MnemFile,appId):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=3:
-        print("usage: python3 "+sys.argv[0]+" <mnem> <app index>")
-        exit()
+    index=0
+    with open("AppID.txt", 'r') as file:
+        index = int(file.read())
 
-    MnemFile=sys.argv[1]
-    index=int(sys.argv[2])   
-
+    MnemFile="Accounts/Frank/Frank.mnem"
+   
     optInDAO(MnemFile,index)
     
     

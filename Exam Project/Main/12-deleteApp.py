@@ -1,4 +1,3 @@
-import sys
 from algosdk.transaction import ApplicationDeleteTxn
 from utilities import wait_for_confirmation, getSKAddr
 import algosdk.encoding as e
@@ -8,8 +7,12 @@ from algosdk.v2client import algod
 algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
 
-def deleteApp(mnemFile,appId):
+"""
+Make a transaction that will delete an application
+"""
 
+
+def deleteApp(mnemFile,appId):
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
     SK,Addr=getSKAddr(mnemFile)
@@ -43,14 +46,11 @@ def deleteApp(mnemFile,appId):
 
 
 if __name__=='__main__':
-    if len(sys.argv)!=3:
-        print("usage: python3 "+sys.argv[0]+" <mnem> <app index>")
-        exit()
+    MnemFile="Accounts/Alice/Alice.mnem"
+    appId=0
+    with open("AppID.txt", 'r') as file:
+        appId = int(file.read())
 
-    MnemFile=sys.argv[1]
-    appId=int(sys.argv[2])
-
-
-    deleteApp(MnemFile,appId)
+    deleteApp(MnemFile, appId)
 
     
