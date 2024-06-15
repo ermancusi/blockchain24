@@ -9,6 +9,17 @@ algodToken="" #free service does not require tokens
 
 
 def main(creatorMnemFile,approvalFile):
+    """
+    The `main` function compiles and deploys an Algorand smart contract application using specified
+    approval and clear programs, and then writes the application ID to a file.
+    
+    :param creatorMnemFile: The `creatorMnemFile` parameter is a file containing the mnemonic phrase
+    (seed phrase) of the creator's Algorand account. This mnemonic phrase is used to derive the private
+    key and address of the creator's account for signing transactions
+    :param approvalFile: The `approvalFile` parameter in the `main` function is a file path that
+    contains the source code for the approval program. This file is read to compile the approval program
+    that will be used in creating an Algorand smart contract application
+    """
 
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()

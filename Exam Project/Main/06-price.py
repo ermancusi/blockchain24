@@ -9,6 +9,28 @@ algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
 
 def proposePrice(MnemFile,appIndex,price,prefix):
+    """
+    The function `proposePrice` in Python interacts with the Algorand blockchain to propose a price for
+    a specific application.
+    
+    :param MnemFile: It seems like the code snippet you provided is a function for proposing a price in
+    a transaction. The parameters required by the function are:
+    :param appIndex: The `appIndex` parameter in the `proposePrice` function appears to represent the
+    index of the application for which you are proposing a price. This index is likely used to identify
+    a specific application within the context of your Algorand smart contract or application. It could
+    be an integer value that
+    :param price: The `price` parameter in the `proposePrice` function seems to represent the price
+    value that you want to propose. It is being converted to bytes using `price.to_bytes(8,'big')`
+    before being passed as an argument in the `ApplicationNoOpTxn` transaction. This
+    :param prefix: The `prefix` parameter in the `proposePrice` function seems to be a string that will
+    be encoded before being passed as an argument in the `ApplicationNoOpTxn` transaction. This encoded
+    string will be used as one of the application arguments along with the `price` value that is
+    :return: The function `proposePrice` does not explicitly return any value. If the code execution is
+    successful without any exceptions, it will print the confirmation message
+    "confirmed_txn=wait_for_confirmation(algodClient,txId,4)" after waiting for the transaction to be
+    confirmed. If there is an exception during the transaction sending process, it will print the error
+    message and return without any further action.
+    """
 
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()

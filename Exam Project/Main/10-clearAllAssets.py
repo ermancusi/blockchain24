@@ -11,6 +11,15 @@ Make a transaction that will send all of an ASA away, and opt out of it
 """
 
 def removeAllAssets(MnemFile): 
+    """
+    The function `removeAllAssets` removes all assets associated with a specific address by closing out
+    or destroying them based on certain conditions.
+    
+    :param MnemFile: It looks like the code snippet you provided is a function that removes assets
+    associated with a specific address. However, the definition of the `MnemFile` parameter is missing.
+    Could you please provide more information about what `MnemFile` represents or how it is used within
+    the `remove
+    """
 
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()

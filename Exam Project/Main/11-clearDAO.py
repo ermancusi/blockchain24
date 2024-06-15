@@ -14,6 +14,17 @@ algodToken="" #free service does not require tokens
 -Make a transaction that will clear a user's state for an application
 """
 def clearDAO(MnemFile,appId):
+    """
+    The `clearDAO` function in Python clears a decentralized autonomous organization (DAO) by closing
+    out its associated asset and clearing its application state.
+    
+    :param MnemFile: It seems like the `MnemFile` parameter is used as an input to retrieve a secret key
+    and address. The function `getSKAddr(MnemFile)` likely reads the mnemonic file to obtain the secret
+    key and address associated with it
+    :param appId: The `appId` parameter in the `clearDAO` function is used to specify the ID of the
+    application that you want to clear the state for. This function interacts with Algorand blockchain
+    using the AlgodClient to clear the state of a specific application identified by its ID
+    """
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
     SK,Addr=getSKAddr(MnemFile)

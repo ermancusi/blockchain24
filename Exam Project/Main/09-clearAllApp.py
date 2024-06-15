@@ -11,6 +11,14 @@ algodToken="" #free service does not require tokens
 Make a transaction that will clear a user's state for an application
 """
 def main(MnemFile): 
+    """
+    The main function in the Python code interacts with Algorand blockchain to remove applications
+    associated with a given address.
+    
+    :param MnemFile: It looks like the `main` function you provided is interacting with the Algorand
+    blockchain to remove applications associated with a specific address. The function seems to be using
+    Algorand's Python SDK
+    """
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
     SK,Addr=getSKAddr(MnemFile)

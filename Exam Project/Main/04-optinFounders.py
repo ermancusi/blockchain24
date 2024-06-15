@@ -8,6 +8,18 @@ algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
 
 def optInDAO(MnemFile,appId):
+    """
+    The `optInDAO` function in Python facilitates the opt-in process for a decentralized autonomous
+    organization (DAO) by transferring assets and opting into an application.
+    
+    :param MnemFile: The `MnemFile` parameter in the `optInDAO` function is used to specify the file
+    containing the mnemonic phrase or seed phrase for a wallet. This mnemonic phrase is typically used
+    to derive the private key and address for a specific account in Algorand blockchain
+    :param appId: The `appId` parameter in the `optInDAO` function represents the application ID that is
+    being used for a decentralized autonomous organization (DAO). This ID is used to identify the
+    specific application within the Algorand blockchain network. It is passed as an argument to the
+    function to specify which DAO application
+    """
 
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()

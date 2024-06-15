@@ -7,6 +7,17 @@ algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
 
 def startApp(mnemFile,index):
+    """
+    The function `startApp` initiates an application on the Algorand blockchain by sending a payment
+    transaction and an application no-op transaction.
+    
+    :param mnemFile: It looks like the code snippet you provided is a Python function called `startApp`
+    that interacts with the Algorand blockchain. The function seems to be responsible for starting an
+    application on the blockchain by creating and sending transactions
+    :param index: The `index` parameter in the `startApp` function seems to be used as an identifier for
+    the application. It is converted to bytes with a length of 8 using `index.to_bytes(8, 'big')` before
+    being included in the transaction. This index likely helps in uniquely identifying
+    """
 
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
