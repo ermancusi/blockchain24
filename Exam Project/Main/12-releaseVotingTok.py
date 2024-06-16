@@ -9,15 +9,10 @@ algodToken="" #free service does not require tokens
 
 def transfer(senderMNEMFile,appId):
     """
-    The function `transfer` in Python sends an asset transfer transaction to a specified application
-    address using Algorand blockchain.
+    The function `transfer` sends governors' tokens back to the DAO
     
-    :param senderMNEMFile: It looks like the `senderMNEMFile` parameter is used as an input to the
-    `getSKAddr` function to retrieve the sender's secret key and address. The sender's secret key is
-    likely stored in a file in mnemonic format, which can be used to derive the sender's address
-    :param appId: It looks like the `appId` parameter is being used in the `transfer` function, but its
-    value is not provided in the code snippet. The `appId` parameter seems to be an identifier for an
-    application. You need to pass a specific value for `appId` when calling the `transfer`
+    :param senderMNEMFile: It is a file containing the mnemonic phrase of the account.
+    :param appId: The `index` parameter in the `startApp` function is an identifier for the application.
     """
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()

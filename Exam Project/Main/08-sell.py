@@ -9,21 +9,15 @@ algodToken = ""  # free service does not require tokens
 
 def sell(MnemFile, appIndex, nAssets):
     """
-    This Python function sells a specified number of assets associated with a particular application
-    index using Algorand blockchain transactions.
+    The `sell` function is used by a user to sell an asset to the DAO.
     
-    :param MnemFile: It seems like the code snippet you provided is a Python function for selling assets
-    using Algorand blockchain. The parameters required for this function are:
-    :param appIndex: The `appIndex` parameter in the `sell` function is used to specify the index of the
-    application that you want to interact with. This index is typically a unique identifier assigned to
-    an application on the Algorand blockchain. It helps the function identify which application it
-    should send transactions to when performing
-    :param nAssets: It seems like the definition of the `sell` function is missing the description of
-    the `nAssets` parameter. The `nAssets` parameter likely represents the number of assets that the
-    user wants to sell. This parameter specifies the quantity of assets to transfer from the sender's
-    address to the application address
+    :param MnemFile: It is a file containing the mnemonic phrase of the account that asks for the price update.
+    :param appIndex: The `index` parameter in the `startApp` function is an identifier for the application.
+    :param nAssets: The `nAssets` parameter in the `buy` function represents the number of assets that
+    a user wants to buy. 
+
     :return: The `sell` function returns the transaction ID (`txId`) of the transactions that were sent
-    to the Algorand blockchain for selling the specified assets through the application.
+    to the Algorand blockchain for selling the specified assets.
     """
     algodClient = algod.AlgodClient(algodToken, algodAddress)
     params = algodClient.suggested_params()
@@ -61,7 +55,7 @@ def sell(MnemFile, appIndex, nAssets):
         print("***********")
         print(err)
         return
-    confirmed_txn = wait_for_confirmation(algodClient, txId, 4)  
+    wait_for_confirmation(algodClient, txId, 4)  
 
 if __name__ == '__main__':
     mnemFile="Accounts/Frank/Frank.mnem"

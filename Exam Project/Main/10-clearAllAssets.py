@@ -6,19 +6,13 @@ from daoutilities import getAllAssets, getAssetCreator, getAmountAssetFromAddrIn
 algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
 
-"""
-Make a transaction that will send all of an ASA away, and opt out of it
-"""
 
 def removeAllAssets(MnemFile): 
     """
-    The function `removeAllAssets` removes all assets associated with a specific address by closing out
-    or destroying them based on certain conditions.
-    
-    :param MnemFile: It looks like the code snippet you provided is a function that removes assets
-    associated with a specific address. However, the definition of the `MnemFile` parameter is missing.
-    Could you please provide more information about what `MnemFile` represents or how it is used within
-    the `remove
+    The function `removeAllAssets` makes a transaction that will send all of an ASA away, and opt out of it
+
+    :param MnemFile: It is a file containing the mnemonic phrase of the user
+
     """
 
     algodClient=algod.AlgodClient(algodToken,algodAddress)
@@ -47,7 +41,7 @@ def removeAllAssets(MnemFile):
         stxn=utxn.sign(SK)
         txId=algodClient.send_transaction(stxn)
         try:
-            confirmed_txn=wait_for_confirmation(algodClient,txId,4)  
+            wait_for_confirmation(algodClient,txId,4)  
         except Exception as err:
             print(f'Error in {txId}')
             continue

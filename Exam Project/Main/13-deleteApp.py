@@ -14,16 +14,13 @@ Make a transaction that will delete an application
 
 def deleteApp(mnemFile,appId):
     """
-    This Python function deletes an application by its ID along with associated assets using Algorand
-    blockchain.
+    This function makes a transaction that will delete an application.
+    The user who will receive the money after the DAO is deleted, must also be the last to return the GOV token to it.
+    Only after that user can invoke the code to delete the DAO.
+
     
-    :param mnemFile: The `mnemFile` parameter in the `deleteApp` function is likely a file containing a
-    mnemonic phrase (mnemonic seed) that is used to derive the private key and address for the user.
-    This mnemonic phrase is typically used in wallet applications to generate a deterministic set of
-    wallets or addresses
-    :param appId: The `appId` parameter in the `deleteApp` function is the ID of the application that
-    you want to delete. This ID is used to identify the specific application that you want to remove
-    from the Algorand blockchain
+    :param mnemFile: It is a file containing the mnemonic phrase of the account requesting deletion.
+    :param appId: The `index` parameter in the `startApp` function is an identifier for the application.
     """
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()

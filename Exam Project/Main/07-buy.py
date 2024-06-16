@@ -9,20 +9,15 @@ algodToken="" #free service does not require tokens
 
 def buy(MnemFile,appIndex,nAssets):
     """
-    The `buy` function in Python interacts with the Algorand blockchain to purchase assets from a
-    specified application using Algorand's Python SDK.
+    The `buy` function is used by a user to purchase an asset from the DAO.
     
-    :param MnemFile: It seems like the code snippet you provided is a function for buying assets in an
-    Algorand blockchain application. The parameters required for this function are:
-    :param appIndex: The `appIndex` parameter in the `buy` function seems to represent the index of the
-    application you are interacting with. This index is used to identify a specific smart contract
-    application on the Algorand blockchain. It is likely used to specify which smart contract
-    application you want to interact with when performing
+    :param MnemFile: It is a file containing the mnemonic phrase of the account that asks for the price update.
+    :param appIndex: The `index` parameter in the `startApp` function is an identifier for the application.
     :param nAssets: The `nAssets` parameter in the `buy` function represents the number of assets that
-    you want to buy. It is used to calculate the total amount to be paid based on the buying price per
-    asset
+    a user wants to buy. 
+
     :return: The `buy` function returns the transaction ID (`txId`) of the transactions sent to the
-    Algorand blockchain for buying assets through an application.
+    Algorand blockchain for buying assets.
     """
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
@@ -61,7 +56,7 @@ def buy(MnemFile,appIndex,nAssets):
         print("***********")
         print(err)
         return
-    confirmed_txn=wait_for_confirmation(algodClient,txId,4)  
+    wait_for_confirmation(algodClient,txId,4)  
 
 
 if __name__=='__main__':

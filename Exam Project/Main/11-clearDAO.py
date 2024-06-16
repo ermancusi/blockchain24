@@ -8,22 +8,15 @@ algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
 
 
-"""
--Make a transaction that will send all of an ASA away, and opt out of it
 
--Make a transaction that will clear a user's state for an application
-"""
 def clearDAO(MnemFile,appId):
     """
-    The `clearDAO` function in Python clears a decentralized autonomous organization (DAO) by closing
-    out its associated asset and clearing its application state.
-    
-    :param MnemFile: It seems like the `MnemFile` parameter is used as an input to retrieve a secret key
-    and address. The function `getSKAddr(MnemFile)` likely reads the mnemonic file to obtain the secret
-    key and address associated with it
-    :param appId: The `appId` parameter in the `clearDAO` function is used to specify the ID of the
-    application that you want to clear the state for. This function interacts with Algorand blockchain
-    using the AlgodClient to clear the state of a specific application identified by its ID
+    The `clearDAO` makes a transaction that will send all of an ASA away, and opt out of it;
+    it also makes a transaction that will clear the user's state for an application
+
+    :param MnemFile: It is a file containing the mnemonic phrase of the account requesting deletion.
+    :param appId: The `index` parameter in the `startApp` function is an identifier for the application.
+
     """
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
@@ -49,7 +42,7 @@ def clearDAO(MnemFile,appId):
             stxn=utxn.sign(SK)
             txId=algodClient.send_transaction(stxn)
             wait_for_confirmation(algodClient,txId,4)
-            txResponse=algodClient.pending_transaction_info(txId)
+            algodClient.pending_transaction_info(txId)
             print(f'Asset {DAOtokenName} cleared')
         else:
             print(f'You are the creator')
@@ -59,7 +52,7 @@ def clearDAO(MnemFile,appId):
     stxn=utxn.sign(SK)
     txId=algodClient.send_transaction(stxn)
     wait_for_confirmation(algodClient,txId,4)
-    txResponse=algodClient.pending_transaction_info(txId)
+    algodClient.pending_transaction_info(txId)
     print(f'Application {appId} cleared')
 
 

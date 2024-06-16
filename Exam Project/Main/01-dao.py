@@ -3,19 +3,16 @@ from daoutilities import DAOtokenName, DAOGovName
 
 cmd=ScratchVar(TealType.bytes)
 total_DAO_token_assets=1_000_000
-threshold1=int(total_DAO_token_assets * 1/2)+1
-threshold2=int(total_DAO_token_assets * 3/4)+1
+threshold1=int(total_DAO_token_assets * 1/2)
+threshold2=int(total_DAO_token_assets * 3/4)
 total_DAO_token_assets=Int(total_DAO_token_assets)
 total_Gov_token_assets=Int(3)
 
 
 def handle_start():     
     """
-    The function `handle_start` creates and configures two new assets based on specific conditions,
-    storing their asset IDs in global state.
-    :return: The function `handle_start` is returning a logic block that checks certain conditions using
-    Algorand Smart Contracts. If the conditions are met, it creates and configures two new assets (DAO
-    token and Gov token) and stores their asset IDs in global state. If the conditions are not met, it
+    The function `handle_start` creates and configures two new assets, i.e., Asset_UniSA and Token_Gov.
+    :return: The function `handle_start` is returning a logic block that creates and configures two new assets and stores their asset IDs in global state. If the conditions are not met, it
     rejects the transaction.
     """
     h_start=If(And(Global.group_size()==Int(2),
@@ -60,16 +57,11 @@ def handle_start():
 
 def handle_priceTok(prefix):
     """
-    This function handles updating a price and executing an asset transfer transaction based on
+    This function handles updating a price (sell or buy) and executing an asset transfer transaction based on
     certain conditions.
     
-    :param prefix: The `prefix` parameter is a string that is used to construct keys for global state
-    variables in the Algorand smart contract. It is used to differentiate between different variables
-    and ensure they are stored and accessed correctly within the contract logic
-    :return: The `handle_priceTok` function is returning a sequence of operations that handle the
-    pricing logic for a token. The function checks certain conditions related to the token price and
-    proposer, updates global state variables accordingly, performs an asset transfer, and then approves
-    the transaction.
+    :param prefix: The `prefix` parameter is a string which can be equal to "b" if it is a buy price update; equal to "s" if it is a sell price update. 
+    :return: The `handle_priceTok` function is returning a sequence of operations that handle the price update logic for a token. The function checks certain conditions related to the token price and proposer, updates global state variables accordingly, performs an asset transfer, and then approves the transaction.
     """
     return Seq([
         If(Or(
@@ -98,12 +90,9 @@ def handle_price(prefix):
     
     :param prefix: The `handle_price` function takes a `prefix` parameter as input. This parameter is
     used within the function to call the `handle_priceTok` function with the provided `prefix` value.
-    The `prefix` parameter is used to pass additional information or context to the `handle_priceTok`
-    function
+    The `prefix` parameter is a string which can be equal to "b" if it is a buy price update; equal to "s" if it is a sell price update.
     :return: The function `handle_price` is returning a sequence (`Seq`) that contains a conditional
-    statement. The conditional statement checks if certain conditions are met using the `If` function.
-    If the conditions are met, it calls the function `handle_priceTok(prefix)`, otherwise it rejects the
-    transaction.
+    statement that checks if certain conditions are met using and, if so, it calls the function `handle_priceTok(prefix)`, otherwise it rejects the transaction.
     """
     h_price=Seq([
            If(And(Global.group_size()==Int(2),
@@ -117,18 +106,13 @@ def handle_price(prefix):
 def approval_program(Alice,Bob,Charlie):
     """
     The function `approval_program` defines the logic for handling different transaction scenarios in an
-    Algorand smart contract application.
-    
+    Algorand smart contract application. The program defines different actions such as creating assets, opting in, closing out, updating the application, deleting the application, buying assets, selling assets, and handling no-op
+
     :param Alice: Alice is a variable representing a participant in the approval program
-    :param Bob: Bob is one of the participants in the approval program along with Alice and Charlie. The
-    program defines different actions based on the sender of a transaction, such as creating assets,
-    opting in, closing out, updating the application, deleting the application, buying assets, selling
-    assets, and handling no-op (no
-    :param Charlie: The code you provided is a TEAL program for an Algorand smart contract. The
-    parameters Alice, Bob, and Charlie are used within the program to define certain conditions and
-    actions based on the sender of a transaction
-    :return: The `approval_program` function returns the compiled TEAL code for an Algorand smart
-    contract application.
+    :param Bob: Bob is a variable representing a participant in the approval program
+    :param Charlie: Charlie is a variable representing a participant in the approval program
+    
+    :return: The `approval_program` function returns the compiled TEAL code for an Algorand smart contract application.
     """
     handle_creation=Seq([
                     App.globalPut(Bytes("bpprice"),Int(0)),                    

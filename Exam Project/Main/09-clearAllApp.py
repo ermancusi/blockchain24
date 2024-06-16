@@ -7,18 +7,14 @@ from algosdk.v2client import algod
 algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
 
-"""
-Make a transaction that will clear a user's state for an application
-"""
+
 def main(MnemFile): 
     """
-    The main function in the Python code interacts with Algorand blockchain to remove applications
-    associated with a given address.
+    This function makes a transaction that will clear a user's state for all his applications.
+
     
-    :param MnemFile: It looks like the `main` function you provided is interacting with the Algorand
-    blockchain to remove applications associated with a specific address. The function seems to be using
-    Algorand's Python SDK
-    """
+    :param MnemFile: It is a file containing the mnemonic phrase of the user
+     """
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
     SK,Addr=getSKAddr(MnemFile)
@@ -35,7 +31,7 @@ def main(MnemFile):
         stxnL=[t.sign(SK) for t in utxnL]
         txId=algodClient.send_transactions(stxnL)
         wait_for_confirmation(algodClient,txId,4)
-        txResponse=algodClient.pending_transaction_info(txId)
+        algodClient.pending_transaction_info(txId)
         listIndex=listIndex[15:]
 
 
