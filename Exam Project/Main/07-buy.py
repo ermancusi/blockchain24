@@ -3,6 +3,7 @@ from daoutilities import getAssetIdFromName, getBuyingPrice, DAOtokenName
 from algosdk.transaction import ApplicationNoOpTxn, PaymentTxn,calculate_group_id
 import algosdk.encoding as e
 from algosdk.v2client import algod
+#from pprint import pprint
 
 algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
@@ -21,6 +22,9 @@ def buy(MnemFile,appIndex,nAssets):
     """
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
+
+    
+    #pprint (vars(params))
 
     SK,Addr=getSKAddr(MnemFile)
     print("User Addr:",Addr)
