@@ -56,7 +56,7 @@ if __name__=='__main__':
     with open("AppID.txt", 'r') as file:
         index = int(file.read())
 
-    MnemFile="Accounts/Frank/Frank.mnem"
+    MnemFile="Accounts/Mike/Mike.mnem"
    
     optInDAO(MnemFile,index)
     

@@ -49,6 +49,6 @@ def removeAllAssets(MnemFile):
 
 
 if __name__=='__main__':
-    MnemFile="Accounts/Alice/Alice.mnem"
+    MnemFile="Accounts/Frank/Frank.mnem"
   
     removeAllAssets(MnemFile)
