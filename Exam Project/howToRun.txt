@@ -1,0 +1,18 @@
+(install 'pip' and 'venv' if you do not have them)
+
+
+python3 -m venv venv
+
+source venv/bin/activate 
+
+pip install -r requirements.txt
+
+_____________________________________________________________________________________
+How to Create the documentation
+
+pip install pdoc
+
+run 'Exam Project/doc_command.py' obtaining a string as output
+
+copy the string obtained in the terminal and press enter
+

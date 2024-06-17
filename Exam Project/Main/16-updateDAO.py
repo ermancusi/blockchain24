@@ -7,6 +7,19 @@ algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
 
 def update_application(mnemFile, app_id, approvalFile):
+    """
+    The function `update_application` compiles and sends an update transaction for an Algorand smart
+    contract application.
+    
+    :param MnemFile: The `MnemFile` parameter is used to specify the file containing the mnemonic phrase of the founder.
+    :param appId: The `appId` parameter is used to specify the application ID that the founder wants to update.
+
+    :param approvalFile: The `approvalFile` parameter in the `update_application` function is a file
+    path that contains the source code for the updated approval program.
+
+    :return: The function `update_application` is returning the transaction ID (`txid`) of the
+    transaction that was sent to update the application on the Algorand blockchain.
+    """
     # Get the suggested transaction parameters
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()

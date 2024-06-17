@@ -5,7 +5,16 @@ from utilities import wait_for_confirmation, getSKAddr
 algodAddress="https://testnet-api.algonode.cloud" #Algorand test node
 algodToken="" #free service does not require tokens
 
-def close_out_application(mnemFile, app_id):
+def optOutDAO(mnemFile, app_id):
+    """
+    The function `optOutDAO` function is used to get users to opt-out from the DAO.
+    
+    :param MnemFile: The `MnemFile` parameter in the `optOutDAO` function is used to specify the file
+    containing the mnemonic phrase of the user.
+    :param appId: The `appId` parameter in the `optOutDAO` function is used to specify the application ID
+    from which the user wants to opt out.
+    """
+        
     # Get the suggested transaction parameters
     algodClient=algod.AlgodClient(algodToken,algodAddress)
     params=algodClient.suggested_params()
@@ -44,4 +53,4 @@ if __name__ == "__main__":
     approvalFile="daoUpdated.teal"
 
     # Close out the application using Alice's credentials
-    close_out_application(mnemFile, app_id)
+    optOutDAO(mnemFile, app_id)
