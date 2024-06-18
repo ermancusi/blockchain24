@@ -72,7 +72,7 @@ if __name__=='__main__':
         exit()
 
     senderMnemonicPath=sys.argv[1]
-    receiverAddr="VRGBBHHZX6K5F4LO5DBDWJAWQPGSWKCRIIEEWZXLLR6HNE7ZDLPYAFGFW"
+    receiverAddr="VRGBBHHZX6K5F4LO5DBDWJAWQPGSWKCRIIEEWZXLLR6HNE7ZDLPYAFGFWE"
     receiverAddr="P5DMG5UCQKSBVYQRJ5S6WLWVDQDVWEFNFXSEEUIDPFNFH4Q7VFYGDSGAAE" #test address
     
     enrollmentNumber = "1111111111"      

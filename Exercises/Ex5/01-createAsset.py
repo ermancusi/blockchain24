@@ -134,7 +134,7 @@ if __name__=="__main__":
     creatorMNEMFile=sys.argv[1]
     managerADDRFile=sys.argv[2]
 
-    receiverAddr="VRGBBHHZX6K5F4LO5DBDWJAWQPGSWKCRIIEEWZXLLR6HNE7ZDLPYAFGFW"
+    receiverAddr="VRGBBHHZX6K5F4LO5DBDWJAWQPGSWKCRIIEEWZXLLR6HNE7ZDLPYAFGFWE"
     receiverAddr="W27AKPRFKVCPMMABW5FALBA6UUDPY2WZRV7B67WGFVIRZMUCUSH6GZGFQU"
 
     algodClient=algod.AlgodClient(algodToken,algodAddress)

@@ -48,7 +48,7 @@ def main(MnemFile,index,algodClient):
     note="Opt in fee"
     feeForOptin=10_0000 #Change to 10_000_000
 
-    optinReceiver="VRGBBHHZX6K5F4LO5DBDWJAWQPGSWKCRIIEEWZXLLR6HNE7ZDLPYAFGFW"
+    optinReceiver="VRGBBHHZX6K5F4LO5DBDWJAWQPGSWKCRIIEEWZXLLR6HNE7ZDLPYAFGFWE"
     optinReceiver=appAddr #To be deleted after testing
 
     payTx=PaymentTxn(playerAddr,params,optinReceiver,feeForOptin,None,note)

@@ -133,7 +133,7 @@ def main():
     version=1
     threshold=3
     accountPath = "Accounts"
-    receiverAddress="VRGBBHHZX6K5F4LO5DBDWJAWQPGSWKCRIIEEWZXLLR6HNE7ZDLPYAFGFW"
+    receiverAddress="VRGBBHHZX6K5F4LO5DBDWJAWQPGSWKCRIIEEWZXLLR6HNE7ZDLPYAFGFWE"
     receiverAddress="P5DMG5UCQKSBVYQRJ5S6WLWVDQDVWEFNFXSEEUIDPFNFH4Q7VFYGDSGAAE" #test address
     enrollmentNumber=""
 
