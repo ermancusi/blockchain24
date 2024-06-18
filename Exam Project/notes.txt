@@ -18,6 +18,6 @@
 
 -The user who will receive the money after the DAO is deleted, must also be the last to return the GOV token to it. Only after that user can invoke the code to delete the DAO.
 
-ToDo:
--Make documentation with Sphinx;
--Write comments;
+round in Algorand
+-https://algorand.struct.ai/2Ka26c
+-https://forum.algorand.org/t/what-is-a-round-used-in-transaction-object-while-sending-a-transaction-object-to-sign/959
