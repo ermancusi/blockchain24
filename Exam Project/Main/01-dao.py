@@ -5,6 +5,8 @@ cmd=ScratchVar(TealType.bytes)
 total_DAO_token_assets=1_000_000
 threshold1=int(total_DAO_token_assets * 1/2)
 threshold2=int(total_DAO_token_assets * 3/4)
+threshold3=int(total_DAO_token_assets * 1/100)
+threshold4=int(total_DAO_token_assets * 1/50)
 total_DAO_token_assets=Int(total_DAO_token_assets)
 total_Gov_token_assets=Int(3)
 
@@ -126,6 +128,9 @@ def approval_program(Alice,Bob,Charlie):
                     App.globalPut(Bytes("sproposer"),Alice),
                     App.globalPut(Bytes("flagTh1"),Int(0)),
                     App.globalPut(Bytes("flagTh2"),Int(0)),
+                    App.globalPut(Bytes("assetReceivedBack"),Int(0)),
+                    App.globalPut(Bytes("flagTh3"),Int(0)),
+                    App.globalPut(Bytes("flagTh4"),Int(0)),
                     Approve()])
 
     handle_optin=If(Or(Txn.sender()==Alice,
@@ -215,7 +220,21 @@ def approval_program(Alice,Bob,Charlie):
                   Gtxn[0].asset_amount() >= Btoi(Gtxn[1].application_args[1])
                   )
               ).Then(
-                  Seq([
+                  Seq([App.globalPut(Bytes("assetReceivedBack"), App.globalGet(Bytes("assetReceivedBack")) + Int(1)),
+                        If(
+                            And(App.globalGet(Bytes("assetReceivedBack")) >= Int(threshold3), App.globalGet(Bytes("flagTh3")) == Int(0), App.globalGet(Bytes("assetReceivedBack")) < Int(threshold4))
+                        ).Then(
+                            Seq([App.globalPut(Bytes("scurrentPrice"), App.globalGet(Bytes("scurrentPrice")) / Int(2)),
+                            App.globalPut(Bytes("flagTh3"), App.globalGet(Bytes("flagTh3")) + Int(1)),
+                            ])
+                        ),
+                        If(
+                            And(App.globalGet(Bytes("flagTh4")) == Int(0), App.globalGet(Bytes("assetReceivedBack")) >= Int(threshold4))
+                        ).Then(
+                            Seq([App.globalPut(Bytes("scurrentPrice"), App.globalGet(Bytes("scurrentPrice")) / Int(2)),
+                                 App.globalPut(Bytes("flagTh4"), App.globalGet(Bytes("flagTh4")) + Int(1)),
+                            ])
+                        ),
                       InnerTxnBuilder.Begin(),
                       InnerTxnBuilder.SetFields({
                           TxnField.type_enum: TxnType.Payment,

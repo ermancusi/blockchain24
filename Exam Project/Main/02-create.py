@@ -28,7 +28,7 @@ def main(creatorMnemFile,approvalFile):
     print("Creator address: ",creatorAddr)
 
 
-    global_ints=9
+    global_ints=12
     global_bytes=2
     globalSchema=StateSchema(global_ints,global_bytes)
 
