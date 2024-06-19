@@ -45,7 +45,7 @@ def optOutDAO(mnemFile, app_id):
 
 
 if __name__ == "__main__":
-    mnemFile="Accounts/Alice/Alice.mnem"
+    mnemFile="Accounts/Mike/Mike.mnem"
     app_id=0
     with open("AppID.txt", 'r') as file:
         app_id = int(file.read())

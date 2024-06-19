@@ -24,7 +24,7 @@ def optInDAO(MnemFile,appId):
     print("User addr:       ",Addr)
 
     appAddr=e.encode_address(e.checksum(b'appID'+appId.to_bytes(8, 'big')))
-    accountInfo=algodClient.account_info(appAddr)
+    algodClient.account_info(appAddr)
     print("App id:          ", appId)
     print("App addr:        ", appAddr)
 

@@ -11,8 +11,8 @@ algodToken="" #free service does not require tokens
 
 def clearDAO(MnemFile,appId):
     """
-    The `clearDAO` makes a transaction that will send all of an ASA away, and opt out of it;
-    it also makes a transaction that will clear the user's state for an application
+    The `clearDAO` makes a transaction that deletes its assets and performs optout relative to them.    
+    It also makes a transaction that will clear the user's state for an application (their local variables).
 
     :param MnemFile: It is a file containing the mnemonic phrase of the account requesting deletion.
     :param appId: The `index` parameter in the `startApp` function is an identifier for the application.
@@ -57,7 +57,7 @@ def clearDAO(MnemFile,appId):
 
 
 if __name__=='__main__':
-    MnemFile="Accounts/Alice/Alice.mnem"
+    MnemFile="Accounts/Mike/Mike.mnem"
     appId=0
     with open("AppID.txt", 'r') as file:
         appId = int(file.read())

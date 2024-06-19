@@ -9,7 +9,7 @@ algodToken="" #free service does not require tokens
 
 def removeAllAssets(MnemFile): 
     """
-    The function `removeAllAssets` makes a transaction that will send all of an ASA away, and opt out of it
+    The `removeAllAssets` function performs a transaction that deletes its assets and performs optout relative to them
 
     :param MnemFile: It is a file containing the mnemonic phrase of the user
 
@@ -49,6 +49,6 @@ def removeAllAssets(MnemFile):
 
 
 if __name__=='__main__':
-    MnemFile="Accounts/Frank/Frank.mnem"
+    MnemFile="Accounts/Mike/Mike.mnem"
   
     removeAllAssets(MnemFile)

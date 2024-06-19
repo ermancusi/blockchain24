@@ -4,7 +4,6 @@ from algosdk import account, mnemonic
 
 if __name__=='__main__':
     accountNames=["Alice","Bob","Charlie","Frank","Mike"]
-    accountNames=["Mike"]
     for accountName in accountNames:
         privateKey, address = account.generate_account()
 

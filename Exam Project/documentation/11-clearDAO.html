@@ -75,8 +75,8 @@
 </span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="k">def</span> <span class="nf">clearDAO</span><span class="p">(</span><span class="n">MnemFile</span><span class="p">,</span><span class="n">appId</span><span class="p">):</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="sd">    The `clearDAO` makes a transaction that will send all of an ASA away, and opt out of it;</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">    it also makes a transaction that will clear the user&#39;s state for an application</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="sd">    The `clearDAO` makes a transaction that deletes its assets and performs optout relative to them.    </span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">    It also makes a transaction that will clear the user&#39;s state for an application (their local variables).</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>
 </span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">    :param MnemFile: It is a file containing the mnemonic phrase of the account requesting deletion.</span>
 </span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">    :param appId: The `index` parameter in the `startApp` function is an identifier for the application.</span>
@@ -121,7 +121,7 @@
 </span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>
 </span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>
 </span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a><span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>    <span class="n">MnemFile</span><span class="o">=</span><span class="s2">&quot;Accounts/Alice/Alice.mnem&quot;</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>    <span class="n">MnemFile</span><span class="o">=</span><span class="s2">&quot;Accounts/Mike/Mike.mnem&quot;</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>    <span class="n">appId</span><span class="o">=</span><span class="mi">0</span>
 </span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;AppID.txt&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
 </span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a>        <span class="n">appId</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
@@ -170,8 +170,8 @@
     <a class="headerlink" href="#clearDAO"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="clearDAO-13"><a href="#clearDAO-13"><span class="linenos">13</span></a><span class="k">def</span> <span class="nf">clearDAO</span><span class="p">(</span><span class="n">MnemFile</span><span class="p">,</span><span class="n">appId</span><span class="p">):</span>
 </span><span id="clearDAO-14"><a href="#clearDAO-14"><span class="linenos">14</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="clearDAO-15"><a href="#clearDAO-15"><span class="linenos">15</span></a><span class="sd">    The `clearDAO` makes a transaction that will send all of an ASA away, and opt out of it;</span>
-</span><span id="clearDAO-16"><a href="#clearDAO-16"><span class="linenos">16</span></a><span class="sd">    it also makes a transaction that will clear the user&#39;s state for an application</span>
+</span><span id="clearDAO-15"><a href="#clearDAO-15"><span class="linenos">15</span></a><span class="sd">    The `clearDAO` makes a transaction that deletes its assets and performs optout relative to them.    </span>
+</span><span id="clearDAO-16"><a href="#clearDAO-16"><span class="linenos">16</span></a><span class="sd">    It also makes a transaction that will clear the user&#39;s state for an application (their local variables).</span>
 </span><span id="clearDAO-17"><a href="#clearDAO-17"><span class="linenos">17</span></a>
 </span><span id="clearDAO-18"><a href="#clearDAO-18"><span class="linenos">18</span></a><span class="sd">    :param MnemFile: It is a file containing the mnemonic phrase of the account requesting deletion.</span>
 </span><span id="clearDAO-19"><a href="#clearDAO-19"><span class="linenos">19</span></a><span class="sd">    :param appId: The `index` parameter in the `startApp` function is an identifier for the application.</span>
@@ -216,8 +216,8 @@
 </span></pre></div>
 
 
-            <div class="docstring"><p>The <code><a href="#clearDAO">clearDAO</a></code> makes a transaction that will send all of an ASA away, and opt out of it;
-it also makes a transaction that will clear the user's state for an application</p>
+            <div class="docstring"><p>The <code><a href="#clearDAO">clearDAO</a></code> makes a transaction that deletes its assets and performs optout relative to them. <br />
+It also makes a transaction that will clear the user's state for an application (their local variables).</p>
 
 <h6 id="parameters">Parameters</h6>
 

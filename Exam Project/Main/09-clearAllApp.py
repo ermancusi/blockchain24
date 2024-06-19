@@ -10,7 +10,7 @@ algodToken="" #free service does not require tokens
 
 def main(MnemFile): 
     """
-    This function makes a transaction that will clear a user's state for all his applications.
+    This function makes a transaction that will clear a user's state for all his applications (their local variables).
 
     
     :param MnemFile: It is a file containing the mnemonic phrase of the user

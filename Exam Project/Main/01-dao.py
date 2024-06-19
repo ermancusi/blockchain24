@@ -118,9 +118,9 @@ def approval_program(Alice,Bob,Charlie):
     """
     handle_creation=Seq([
                     App.globalPut(Bytes("bpprice"),Int(0)),                    
-                    App.globalPut(Bytes("bcurrentPrice"),Int(900_000)),
+                    App.globalPut(Bytes("bcurrentPrice"),Int(1_000_000)),
                     App.globalPut(Bytes("spprice"),Int(0)),                    
-                    App.globalPut(Bytes("scurrentPrice"),Int(1_000_000)),
+                    App.globalPut(Bytes("scurrentPrice"),Int(800_000)),
                     App.globalPut(Bytes("assetIDGov"),Int(0)),
                     App.globalPut(Bytes("assetIDToken"),Int(0)),
                     App.globalPut(Bytes("assetSold"),Int(0)),
